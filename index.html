@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0A0A1F">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Horeca">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Synergy Horeca ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM — Dark Gold "Option C"
+═══════════════════════════════════════ */
+:root{
+  --bg:       #08081A;
+  --bg2:      #0E0E26;
+  --bg3:      #13132E;
+  --bg4:      #1A1A3A;
+  --card:     rgba(255,255,255,.04);
+  --card2:    rgba(255,255,255,.07);
+  --glass:    rgba(14,14,38,.85);
+  --glassl:   rgba(14,14,38,.65);
+
+  --gold:     #D4880A;
+  --gold2:    #F5A623;
+  --gold3:    #FFD166;
+  --goldb:    rgba(212,136,10,.15);
+  --goldc:    rgba(212,136,10,.08);
+
+  --green:    #22C55E;
+  --green2:   rgba(34,197,94,.15);
+  --red:      #EF4444;
+  --red2:     rgba(239,68,68,.15);
+  --blue:     #60A5FA;
+  --blue2:    rgba(96,165,250,.15);
+  --teal:     #2DD4BF;
+  --teal2:    rgba(45,212,191,.15);
+  --purple:   #A78BFA;
+  --pur2:     rgba(167,139,250,.15);
+
+  --border:   rgba(255,255,255,.08);
+  --border2:  rgba(255,255,255,.14);
+  --text:     #F1F0EA;
+  --text2:    rgba(241,240,234,.6);
+  --text3:    rgba(241,240,234,.35);
+  --text-gold:#E8A020;
+
+  --tabbar:   64px;
+  --safe-t:   env(safe-area-inset-top,0px);
+  --safe-b:   env(safe-area-inset-bottom,0px);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:'DM Sans',sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--goldb);border-radius:2px}
+
+/* ─── SPLASH ─── */
+#splash{
+  position:fixed;inset:0;z-index:9000;
+  background:radial-gradient(ellipse at 30% 40%,#1A1040 0%,#08081A 60%,#000510 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity 1s ease,transform 1s ease;
+}
+#splash.out{opacity:0;transform:scale(1.06);pointer-events:none}
+.sp-orb{
+  width:130px;height:130px;border-radius:32px;
+  background:linear-gradient(145deg,#1A0F00,#8B5A00,#D4880A,#F5A623,#FFD166);
+  display:flex;align-items:center;justify-content:center;font-size:62px;
+  box-shadow:0 0 100px rgba(212,136,10,.6),0 0 200px rgba(212,136,10,.2),
+             inset 0 1px 0 rgba(255,255,255,.15);
+  animation:orbPulse 3s ease-in-out infinite;margin-bottom:32px;
+  position:relative;
+}
+.sp-orb::after{
+  content:'';position:absolute;inset:-2px;border-radius:34px;
+  background:linear-gradient(145deg,rgba(255,209,102,.3),transparent,rgba(212,136,10,.3));
+  animation:orbRing 3s ease-in-out infinite;
+}
+@keyframes orbPulse{0%,100%{box-shadow:0 0 80px rgba(212,136,10,.5),0 0 160px rgba(212,136,10,.15)}50%{box-shadow:0 0 140px rgba(255,209,102,.7),0 0 280px rgba(212,136,10,.3)}}
+@keyframes orbRing{0%,100%{opacity:.4}50%{opacity:1}}
+.sp-brand{font-family:'Playfair Display',serif;font-size:30px;color:#fff;letter-spacing:1px;text-align:center;line-height:1.2}
+.sp-sub{font-size:11px;color:var(--gold2);letter-spacing:3px;font-weight:500;margin-top:6px;text-align:center}
+.sp-bar{width:220px;height:2px;background:rgba(255,255,255,.08);border-radius:1px;margin-top:40px;overflow:hidden;position:relative}
+.sp-fill{position:absolute;inset:0;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold3));border-radius:1px;animation:spFill 5s ease forwards}
+@keyframes spFill{from{width:0}to{width:100%}}
+.sp-stars{position:absolute;inset:0;pointer-events:none}
+.sp-star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d,2s) ease-in-out infinite var(--del,0s)}
+@keyframes twinkle{0%,100%{opacity:.1;transform:scale(.8)}50%{opacity:.8;transform:scale(1.2)}}
+
+/* ─── INSTALL SCREEN ─── */
+#install-scr{
+  display:none;position:fixed;inset:0;z-index:9500;
+  background:radial-gradient(ellipse at 30% 40%,#1A1040,#08081A 70%);
+  flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;
+}
+.inst-icon{width:100px;height:100px;border-radius:24px;background:linear-gradient(145deg,#C8860A,#F5A623);display:flex;align-items:center;justify-content:center;font-size:48px;margin-bottom:20px;box-shadow:0 0 60px rgba(212,136,10,.4)}
+.inst-title{font-family:'Playfair Display',serif;font-size:26px;color:#fff;text-align:center;margin-bottom:8px}
+.inst-sub{font-size:13px;color:var(--text2);text-align:center;margin-bottom:32px}
+.inst-btn{width:100%;max-width:300px;background:linear-gradient(135deg,#C8860A,#F5A623);color:#fff;border:none;border-radius:16px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'DM Sans',sans-serif;box-shadow:0 8px 32px rgba(212,136,10,.4);margin-bottom:14px}
+.inst-skip{font-size:13px;color:var(--text3);cursor:pointer;text-decoration:underline;text-underline-offset:3px;background:none;border:none;color:var(--text3)}
+.inst-guide{width:100%;max-width:300px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;margin-bottom:16px}
+.inst-step{display:flex;align-items:center;gap:12px;padding:8px 0}
+.inst-num{width:32px;height:32px;border-radius:8px;background:var(--goldb);border:1px solid var(--goldc);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.inst-txt{font-size:13px;color:var(--text);line-height:1.5}
+
+/* ─── MAIN ─── */
+#main{display:none;position:fixed;inset:0;overflow:hidden}
+#main.fadein{animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ─── LIVING CATALOGUE BACKGROUND ─── */
+#cat-bg{
+  position:fixed;inset:0;z-index:0;overflow:hidden;
+  pointer-events:none;
+}
+.cat-bg-slide{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  opacity:0;transition:opacity 2s ease;
+}
+.cat-bg-slide.on{opacity:1}
+.cat-bg-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(8,8,26,.92) 0%,
+    rgba(8,8,26,.75) 40%,
+    rgba(8,8,26,.90) 80%,
+    rgba(8,8,26,.97) 100%);
+}
+
+/* ─── SCREENS ─── */
+.screen{position:absolute;inset:0;bottom:var(--tabbar);overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:1;display:none}
+.screen.on{display:block}
+
+/* ─── HOME ─── */
+#home-scr{background:transparent}
+.home-hdr{
+  position:sticky;top:0;z-index:50;
+  padding:calc(var(--safe-t) + 14px) 18px 14px;
+  background:rgba(8,8,26,.7);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.home-hdr-row{display:flex;align-items:center;justify-content:space-between}
+.home-brand{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold2);font-style:italic;letter-spacing:.5px}
+.home-time{font-size:24px;font-weight:700;color:var(--text);letter-spacing:-1px}
+.home-date{font-size:11px;color:var(--text3);font-weight:400;margin-top:2px}
+.home-prayer-pill{background:var(--goldb);border:1px solid rgba(212,136,10,.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--gold2);display:inline-flex;align-items:center;gap:5px}
+.home-content{padding:16px 16px calc(24px + var(--safe-b))}
+
+/* KPI CARDS */
+.kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.kpi-card{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:16px;padding:14px 10px;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,136,10,.4),transparent)}
+.kpi-ico{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:8px;font-size:16px}
+.kpi-val{font-size:17px;font-weight:700;color:var(--text);letter-spacing:-0.5px;line-height:1}
+.kpi-lbl{font-size:9px;color:var(--text3);font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.kpi-trend{font-size:9px;font-weight:600;margin-top:4px}
+
+/* ALERT */
+.alert-card{background:linear-gradient(135deg,rgba(212,136,10,.12),rgba(245,166,35,.06));border:1px solid rgba(212,136,10,.25);border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:16px;position:relative;overflow:hidden}
+.alert-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(245,166,35,.6),transparent)}
+
+/* APP GRID iOS style */
+.sec-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin:16px 0 10px}
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.app-tile{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;cursor:pointer;border-radius:14px;transition:all .15s;-webkit-tap-highlight-color:transparent;position:relative}
+.app-tile:active{transform:scale(.86);background:rgba(255,255,255,.05)}
+.app-icon{width:58px;height:58px;border-radius:15px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1)}
+.app-icon svg{width:30px;height:30px}
+.app-lbl{font-size:10px;font-weight:500;color:var(--text2);text-align:center;max-width:60px;line-height:1.2}
+.app-badge{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:9px;font-weight:700;border-radius:10px;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--bg)}
+
+/* CHART PREVIEW on home */
+.chart-preview{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:16px}
+.chart-bar-row{display:flex;align-items:flex-end;gap:6px;height:60px;margin-top:10px}
+.chart-bar{flex:1;border-radius:4px 4px 0 0;background:linear-gradient(to top,var(--gold),var(--gold3));opacity:.7;transition:height .5s ease}
+.chart-bar.active{opacity:1}
+.chart-months{display:flex;gap:6px;margin-top:4px}
+.chart-month{flex:1;text-align:center;font-size:8px;color:var(--text3)}
+
+/* ─── TAB BAR ─── */
+#tabbar{
+  position:fixed;bottom:0;left:0;right:0;
+  height:calc(var(--tabbar) + var(--safe-b));
+  background:rgba(8,8,26,.9);
+  backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  border-top:1px solid var(--border);
+  display:flex;align-items:flex-start;padding-top:8px;z-index:200;
+}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:2px;transition:all .15s}
+.tab:active .tab-ico-wrap{transform:scale(.88)}
+.tab-ico-wrap{width:38px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:12px;transition:all .2s;position:relative}
+.tab-ico-wrap svg{width:22px;height:22px;transition:all .2s;stroke:var(--text3);fill:none;stroke-width:1.8}
+.tab.on .tab-ico-wrap{background:var(--goldb)}
+.tab.on .tab-ico-wrap svg{stroke:var(--gold2)}
+.tab-lbl{font-size:9px;font-weight:600;color:var(--text3);transition:color .2s}
+.tab.on .tab-lbl{color:var(--gold2)}
+.tab-dot{position:absolute;top:-2px;right:-2px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid var(--bg)}
+
+/* ─── PANELS ─── */
+.panel{position:fixed;inset:0;z-index:400;display:none;flex-direction:column;background:var(--bg2);overflow:hidden}
+.panel.on{display:flex;animation:panelSlide .25s cubic-bezier(.25,0,.3,1)}
+@keyframes panelSlide{from{opacity:.3;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+.panel-hdr{
+  flex-shrink:0;background:rgba(8,8,26,.95);backdrop-filter:blur(20px);
+  height:calc(var(--safe-t)+56px);
+  display:flex;align-items:flex-end;padding:0 16px 12px;gap:12px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.panel-hdr::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,136,10,.3),transparent)}
+.panel-back{width:36px;height:36px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s}
+.panel-back:active{background:rgba(255,255,255,.1)}
+.panel-back svg{width:18px;height:18px;stroke:var(--text2);fill:none;stroke-width:2}
+.panel-ttl{font-family:'Playfair Display',serif;font-size:17px;color:var(--text);flex:1}
+.panel-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg)}
+
+/* ─── GESTION SCREEN ─── */
+#gest-scr{background:var(--bg);display:none;flex-direction:column}
+.gest-hdr{flex-shrink:0;background:rgba(8,8,26,.95);backdrop-filter:blur(20px);padding:calc(var(--safe-t)+14px) 16px 12px;border-bottom:1px solid var(--border)}
+.inner-tabs{display:flex;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);flex-shrink:0;position:sticky;top:0;z-index:10}
+.itab{flex:1;padding:11px 6px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;color:var(--text3);border-bottom:2px solid transparent;transition:all .2s}
+.itab.on{color:var(--gold2);border-bottom-color:var(--gold2)}
+#gest-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:calc(90px + var(--safe-b))}
+
+/* ─── SHARED UI ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap}
+.btn:active{transform:scale(.95)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;box-shadow:0 4px 16px rgba(212,136,10,.3)}
+.btn-green{background:var(--green);color:#000;box-shadow:0 4px 16px rgba(34,197,94,.25)}
+.btn-red{background:var(--red);color:#fff;box-shadow:0 4px 16px rgba(239,68,68,.2)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid var(--border)}
+.btn-full{width:100%}
+.btn-sm{padding:7px 13px;font-size:12px;border-radius:10px}
+.btn-lg{padding:14px 18px;font-size:15px;border-radius:14px}
+
+.field{margin-bottom:13px}
+.field label{display:block;font-size:10px;font-weight:700;color:var(--text3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+.field input,.field select,.field textarea{
+  width:100%;padding:12px 14px;background:rgba(255,255,255,.05);
+  border:1px solid var(--border);border-radius:12px;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);
+  outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold2);background:rgba(212,136,10,.05);box-shadow:0 0 0 3px rgba(212,136,10,.1)}
+.field select option{background:var(--bg3);color:var(--text)}
+.field textarea{resize:none;min-height:75px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,136,10,.3),transparent)}
+.card-hd{padding:13px 15px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-bd{padding:13px 15px}
+.card-t{font-size:13px;font-weight:600;color:var(--text)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700}
+.b-pret{background:rgba(34,197,94,.15);color:var(--green);border:1px solid rgba(34,197,94,.25)}
+.b-urg{background:var(--goldb);color:var(--gold2);border:1px solid rgba(212,136,10,.25)}
+.b-pri{background:var(--blue2);color:var(--blue);border:1px solid rgba(96,165,250,.25)}
+.b-enc{background:rgba(255,255,255,.08);color:var(--text2);border:1px solid var(--border)}
+.b-per{background:var(--red2);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+
+/* STOCK CARDS */
+.stock-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.stock-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px}
+.stock-card.pret::before{background:var(--green)}
+.stock-card.urg::before{background:var(--gold2)}
+.stock-card.pri::before{background:var(--blue)}
+.stock-card:active{transform:scale(.98);background:rgba(255,255,255,.07)}
+.stock-img{width:50px;height:50px;border-radius:10px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.05)}
+.stock-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.35;flex:1}
+.stock-price{font-size:17px;font-weight:700;color:var(--text);letter-spacing:-0.5px}
+.stock-cost{font-size:10px;color:var(--text3)}
+.prog-bar{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-top:8px}
+.prog-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),var(--gold3))}
+
+/* OVERLAYS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;display:none;align-items:flex-end;backdrop-filter:blur(10px)}
+.overlay.on{display:flex;animation:fadeIn2 .2s}
+@keyframes fadeIn2{from{opacity:0}to{opacity:1}}
+.sheet{background:var(--bg2);border-radius:24px 24px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding-bottom:calc(20px + var(--safe-b));border-top:1px solid var(--border);position:relative}
+.sheet::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,136,10,.5),transparent);border-radius:24px 24px 0 0}
+.sh-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 0}
+.sh-ttl{padding:14px 18px 12px;border-bottom:1px solid var(--border);font-family:'Playfair Display',serif;font-size:17px;color:var(--text);display:flex;align-items:center;justify-content:space-between}
+.sh-x{color:var(--text3);cursor:pointer;width:28px;height:28px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .15s;font-family:'DM Sans',sans-serif}
+.sh-body{padding:16px 18px}
+
+/* DIALOGS */
+.dialog{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:700;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(14px)}
+.dialog.on{display:flex;animation:fadeIn2 .2s}
+.dlg{background:var(--bg3);border-radius:22px;padding:28px 22px 22px;width:100%;max-width:300px;border:1px solid var(--border);position:relative;overflow:hidden;animation:popIn .22s cubic-bezier(.34,1.56,.64,1)}
+.dlg::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,136,10,.5),transparent)}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.dlg-ico{width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.dlg-t{font-family:'Playfair Display',serif;font-size:18px;color:var(--text);text-align:center;margin-bottom:7px}
+.dlg-s{font-size:13px;color:var(--text2);text-align:center;line-height:1.6;margin-bottom:22px}
+.dlg-btns{display:flex;gap:10px}
+
+/* TOASTS */
+#toasts{position:fixed;top:calc(var(--safe-t)+70px);left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none;min-width:200px;max-width:88vw}
+.toast{background:rgba(20,20,40,.95);color:var(--text);padding:11px 18px;border-radius:14px;font-size:12px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.5);text-align:center;animation:toastIn .28s ease;position:relative;overflow:hidden;border:1px solid var(--border);backdrop-filter:blur(10px)}
+.toast::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold2)}
+.toast.g::before{background:var(--green)}
+.toast.r::before{background:var(--red)}
+@keyframes toastIn{from{opacity:0;transform:translateY(-10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* LINK ITEMS */
+.link-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s;text-decoration:none}
+.link-item:active{transform:scale(.97);background:rgba(255,255,255,.07)}
+.link-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.link-info{flex:1;min-width:0}
+.link-name{font-size:14px;font-weight:600;color:var(--text)}
+.link-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* CONTACT ROWS */
+.ct-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:all .15s}
+.ct-row:active{background:rgba(255,255,255,.04)}
+.avatar{width:44px;height:44px;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* CALCULATOR */
+.calc-disp{background:rgba(255,255,255,.04);border-radius:18px;padding:24px 18px;margin:14px;text-align:right;border:1px solid var(--border)}
+.calc-expr{font-size:13px;color:var(--text3);min-height:18px}
+.calc-val{font-size:44px;font-weight:300;color:var(--text);word-break:break-all;line-height:1.1;letter-spacing:-2px;font-family:'Playfair Display',serif}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 14px 14px}
+.cb{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:16px;padding:18px 6px;font-size:18px;font-weight:500;text-align:center;cursor:pointer;color:var(--text);transition:all .15s;font-family:'DM Sans',sans-serif}
+.cb:active{transform:scale(.9);background:rgba(255,255,255,.1)}
+.cb.op{background:var(--goldb);color:var(--gold2);border-color:rgba(212,136,10,.2)}
+.cb.fn{background:rgba(255,255,255,.04);color:var(--text2);font-size:14px}
+.cb.eq{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#fff;border:none;box-shadow:0 4px 20px rgba(212,136,10,.4)}
+.cb.zero{grid-column:span 2;text-align:left;padding-left:24px}
+
+/* PRAYER */
+.prayer-card{background:linear-gradient(160deg,#0E082E,#08081A);border:1px solid var(--border);border-radius:20px;padding:24px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden}
+.prayer-card::before{content:'';position:absolute;top:-30px;left:50%;transform:translateX(-50%);width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(212,136,10,.12),transparent 70%)}
+.pr-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--border)}
+.pr-row:last-child{border-bottom:none}
+.pr-name{font-size:14px;font-weight:600;color:var(--text)}
+.pr-ar{font-family:'Amiri',serif;font-size:12px;color:var(--text3);margin-top:2px}
+.pr-time{font-size:18px;font-weight:700;letter-spacing:-0.5px}
+
+/* RADIO */
+.radio-item{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:9px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s}
+.radio-item.playing{background:var(--goldb);border-color:rgba(212,136,10,.3)}
+
+/* NOTES */
+.note-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:9px;cursor:pointer;transition:all .15s;position:relative}
+.note-card:active{transform:scale(.98)}
+
+/* CATALOGUE FULL */
+#cat-full{position:fixed;inset:0;z-index:600;display:none;flex-direction:column;background:#000}
+#cat-full.on{display:flex}
+.cf-slide{position:absolute;inset:0;display:none;flex-direction:column}
+.cf-slide.on{display:flex}
+.cf-img{flex:1;object-fit:cover;width:100%}
+.cf-info{background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.6));padding:20px 18px calc(18px + var(--safe-b));flex-shrink:0}
+.cf-close{position:absolute;top:calc(var(--safe-t)+14px);right:16px;z-index:10;width:36px;height:36px;border-radius:18px;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15)}
+.cf-nav{position:absolute;top:50%;transform:translateY(-50%);width:100%;display:flex;justify-content:space-between;padding:0 12px;pointer-events:none}
+.cf-nav-btn{width:44px;height:44px;border-radius:22px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:all;border:1px solid rgba(255,255,255,.15);transition:all .15s}
+.cf-dots{position:absolute;bottom:140px;left:0;right:0;display:flex;justify-content:center;gap:5px}
+.cf-dot{width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,.3);transition:all .25s}
+.cf-dot.on{width:18px;background:#fff}
+.cf-share-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.cf-share-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px;border-radius:12px;cursor:pointer;transition:all .15s;border:none;font-family:'DM Sans',sans-serif}
+.cf-share-btn:active{transform:scale(.92)}
+
+/* DOC PANEL */
+#m-doc{position:fixed;inset:0;background:var(--bg);z-index:450;display:none;flex-direction:column;overflow:hidden}
+.doc-line-row{padding:10px 14px;border-bottom:1px solid var(--border)}
+
+/* PHOTO */
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.photo-thumb{aspect-ratio:1;object-fit:cover;background:rgba(255,255,255,.05);cursor:pointer;transition:opacity .15s}
+.photo-thumb:active{opacity:.7}
+
+/* ── FLOATING BUTTONS (permanent) ── */
+#float-btns{position:fixed;right:14px;bottom:calc(var(--tabbar) + 14px + var(--safe-b));z-index:150;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.float-btn-pill{display:flex;align-items:center;gap:7px;border-radius:24px;padding:9px 14px 9px 10px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;transition:all .2s;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+.float-btn-pill:active{transform:scale(.92)}
+.float-prayer{background:linear-gradient(135deg,rgba(14,14,38,.95),rgba(14,14,38,.9));border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.float-note{background:linear-gradient(135deg,rgba(14,14,38,.95),rgba(14,14,38,.9));border:1px solid rgba(212,136,10,.3);color:var(--gold2)}
+.float-ico{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+#prayer-ring{position:absolute;inset:-3px;border-radius:50%;border:2px solid transparent;animation:prayerRing 1s ease-in-out 3;display:none}
+@keyframes prayerRing{0%,100%{border-color:transparent;transform:scale(1)}50%{border-color:var(--green);transform:scale(1.15)}}
+
+/* SEARCH BAR */
+.search-bar{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:13px;padding:10px 13px;margin-bottom:13px}
+.search-bar svg{width:16px;height:16px;stroke:var(--text3);flex-shrink:0;fill:none}
+.search-bar input{background:none;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);flex:1}
+.search-bar input::placeholder{color:var(--text3)}
+
+/* SETTINGS */
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.toggle{width:46px;height:26px;background:rgba(255,255,255,.1);border-radius:13px;cursor:pointer;transition:background .2s;position:relative;flex-shrink:0}
+.toggle.on{background:var(--green)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:10px;background:#fff;transition:transform .2s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.toggle.on::after{transform:translateX(20px)}
+
+/* CHARTS (finance) */
+canvas{max-width:100%}
+
+/* SHARE SHEET */
+.share-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px}
+.share-ico{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:8px 4px;border-radius:12px;transition:all .15s}
+.share-ico:active{transform:scale(.88);background:rgba(255,255,255,.06)}
+.share-ico-box{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px}
+.share-ico-lbl{font-size:10px;color:var(--text2);font-weight:500}
+
+/* SUIVI CHARTS */
+.chart-container{position:relative;height:200px;margin-bottom:12px}
+.mini-stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.mini-stat{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center}
+.mini-val{font-size:18px;font-weight:700;letter-spacing:-0.5px}
+.mini-lbl{font-size:9px;color:var(--text3);margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+</style>
+</head>
+<body>
+
+<!-- ════ INSTALL SCREEN ════ -->
+<div id="install-scr">
+  <div style="position:absolute;inset:0;overflow:hidden;pointer-events:none" id="inst-stars"></div>
+  <div class="inst-icon">🍽️</div>
+  <div class="inst-title">Synergy Horeca</div>
+  <div class="inst-sub">Votre copilote commercial · Tunisie</div>
+  <button class="inst-btn" id="inst-btn" onclick="doInstall()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 16V4M8 8l4-4 4 4"/><rect x="3" y="18" width="18" height="4" rx="2"/></svg>
+    Installer l'application
+  </button>
+  <button class="inst-skip" onclick="skipInstall()">Continuer sans installer</button>
+  <div class="inst-guide" id="inst-guide" style="display:none">
+    <div style="font-size:12px;font-weight:700;color:var(--gold2);text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:12px">📲 Installer sur iPhone</div>
+    <div class="inst-step"><div class="inst-num">1️⃣</div><div class="inst-txt">Appuyez sur <strong>Partager ⎙</strong> en bas de Safari</div></div>
+    <div class="inst-step"><div class="inst-num">2️⃣</div><div class="inst-txt">Choisissez <strong>"Sur l'écran d'accueil"</strong></div></div>
+    <div class="inst-step"><div class="inst-num">3️⃣</div><div class="inst-txt">Appuyez sur <strong>Ajouter</strong></div></div>
+  </div>
+</div>
+
+<!-- ════ SPLASH ════ -->
+<div id="splash">
+  <div class="sp-stars" id="sp-stars"></div>
+  <div class="sp-orb">🍽️</div>
+  <div class="sp-brand">Synergy Horeca</div>
+  <div class="sp-sub">EQUIPMENT · TUNISIE</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+
+<!-- ════ MAIN APP ════ -->
+<div id="main">
+
+  <!-- Living Catalogue Background -->
+  <div id="cat-bg">
+    <div class="cat-bg-overlay"></div>
+  </div>
+
+  <!-- ── HOME ── -->
+  <div class="screen on" id="home-scr">
+    <div class="home-hdr">
+      <div class="home-hdr-row">
+        <div class="home-brand">Synergy Horeca</div>
+        <div class="home-time" id="hh-time">--:--</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:5px">
+        <div class="home-date" id="hh-date"></div>
+        <div class="home-prayer-pill">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l3 3"/></svg>
+          <span id="hh-prayer">—</span>
+        </div>
+      </div>
+    </div>
+    <div class="home-content">
+
+      <!-- ALERT -->
+      <div class="alert-card" id="home-alert" onclick="switchTab('gest')">
+        <div style="width:36px;height:36px;border-radius:10px;background:var(--goldb);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">⚡</div>
+        <div style="flex:1;font-size:12px;font-weight:600;color:var(--gold2)" id="home-alert-txt">Chargement...</div>
+        <div style="color:var(--gold3);font-size:20px">›</div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-strip" id="home-kpis">
+        <div class="kpi-card"><div class="kpi-ico" style="background:var(--goldb)">📦</div><div class="kpi-val" id="k-stock">—</div><div class="kpi-lbl">Articles</div></div>
+        <div class="kpi-card"><div class="kpi-ico" style="background:var(--green2)">💰</div><div class="kpi-val" id="k-marge">—</div><div class="kpi-lbl">Marge</div></div>
+        <div class="kpi-card"><div class="kpi-ico" style="background:var(--blue2)">👥</div><div class="kpi-val" id="k-clients">—</div><div class="kpi-lbl">Clients</div></div>
+      </div>
+
+      <!-- Mini chart -->
+      <div class="chart-preview" id="home-chart-preview">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:12px;font-weight:600;color:var(--text2)">Ventes — 6 derniers mois</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gold2)" id="home-chart-total">—</div>
+        </div>
+        <div class="chart-bar-row" id="home-bars"></div>
+        <div class="chart-months" id="home-months"></div>
+      </div>
+
+      <!-- QUICK APPS -->
+      <div class="sec-label">Accès rapide</div>
+      <div class="app-grid" id="quick-grid"></div>
+
+      <div class="sec-label">Applications</div>
+      <div class="app-grid" id="all-grid"></div>
+
+    </div>
+  </div>
+
+  <!-- ── GESTION ── -->
+  <div id="gest-scr">
+    <div class="gest-hdr">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;color:var(--text)">Gestion</div>
+        <button class="btn btn-gold btn-sm" onclick="openAddStock()">+ Article</button>
+      </div>
+      <div class="mini-stat-row" style="margin-top:12px;margin-bottom:0" id="gest-kpis"></div>
+    </div>
+    <div class="inner-tabs">
+      <div class="itab on" id="gt-stock" onclick="gTab('stock')">Stock</div>
+      <div class="itab" id="gt-ventes" onclick="gTab('ventes')">Ventes</div>
+      <div class="itab" id="gt-suivi" onclick="gTab('suivi')">Suivi</div>
+      <div class="itab" id="gt-finance" onclick="gTab('finance')">Finance</div>
+      <div class="itab" id="gt-clients" onclick="gTab('clients')">Contacts</div>
+    </div>
+    <div id="gest-content"></div>
+  </div>
+
+  <!-- ── MORE SCREEN ── -->
+  <div class="screen" id="more-scr">
+    <div style="padding:calc(var(--safe-t)+14px) 18px 12px;background:rgba(8,8,26,.9);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10;border-bottom:1px solid var(--border)">
+      <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--text)">Applications</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:3px">Tous les outils Synergy</div>
+    </div>
+    <div style="padding:16px;padding-bottom:calc(80px + var(--safe-b))">
+      <div class="app-grid" id="more-grid"></div>
+    </div>
+  </div>
+
+  <!-- ══ PANELS ══ -->
+
+  <!-- P1: PRIÈRE -->
+  <div class="panel" id="p-1">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Prière & Spiritualité</div>
+      <button class="btn btn-sm" style="background:var(--green2);color:var(--green);border:1px solid rgba(34,197,94,.2)" onclick="playAdhan()">🔊 Adhan</button>
+    </div>
+    <div class="panel-body">
+      <div class="prayer-card">
+        <div style="font-size:44px;margin-bottom:16px">🕌</div>
+        <div style="font-size:38px;font-weight:700;color:var(--gold2);letter-spacing:-1px" id="pr-next-t">—</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:6px" id="pr-next-l">Prochaine prière</div>
+        <div style="font-family:'Amiri',serif;font-size:22px;color:rgba(255,255,255,.25);margin-top:18px;direction:rtl">بسم الله الرحمن الرحيم</div>
+      </div>
+      <div class="card" style="margin:0 0 14px" id="prayer-list"></div>
+      <div style="padding:0 0 16px;display:flex;flex-direction:column;gap:9px">
+        <a href="https://www.islamway.net" target="_blank" class="link-item">
+          <div class="link-ico" style="background:var(--teal2);font-size:20px">📻</div>
+          <div class="link-info"><div class="link-name">Écouter le Coran</div><div class="link-sub">islamway.net</div></div>
+        </a>
+        <a href="https://quran.com" target="_blank" class="link-item">
+          <div class="link-ico" style="background:var(--goldb);font-size:20px">📖</div>
+          <div class="link-info"><div class="link-name">Quran.com</div><div class="link-sub">Lecture et écoute</div></div>
+        </a>
+        <a href="https://muslimpro.com" target="_blank" class="link-item">
+          <div class="link-ico" style="background:var(--green2);font-size:20px">🌙</div>
+          <div class="link-info"><div class="link-name">Muslim Pro</div><div class="link-sub">Prière, Qibla, Coran</div></div>
+        </a>
+      </div>
+      <div style="text-align:center;padding:0 20px 32px;font-family:'Amiri',serif;font-size:20px;color:var(--text3);direction:rtl;line-height:2">
+        اللهم اجعلنا من المتقين وارزقنا الرزق الحلال الواسع آمين
+      </div>
+    </div>
+  </div>
+
+  <!-- P2: NOTES -->
+  <div class="panel" id="p-2">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Notes Rapides</div>
+      <button class="btn btn-gold btn-sm" onclick="openNewNote()">+ Note</button>
+    </div>
+    <div class="panel-body" style="padding:14px" id="notes-list"></div>
+  </div>
+
+  <!-- P3: PHOTO -->
+  <div class="panel" id="p-3">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Photo & Vidéo</div>
+    </div>
+    <div class="panel-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px">
+        <label for="cam-in" style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:18px;padding:24px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all .15s">
+          <div style="width:54px;height:54px;border-radius:14px;background:linear-gradient(145deg,#1C1C1E,#3A3A3C);display:flex;align-items:center;justify-content:center;font-size:26px">📷</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">Caméra</div>
+        </label>
+        <input type="file" id="cam-in" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this)">
+        <label for="gal-in" style="background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:18px;padding:24px 12px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all .15s">
+          <div style="width:54px;height:54px;border-radius:14px;background:linear-gradient(145deg,#FF6B6B,#FF8E53);display:flex;align-items:center;justify-content:center;font-size:26px">🖼️</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">Galerie</div>
+        </label>
+        <input type="file" id="gal-in" accept="image/*,video/*" multiple style="display:none" onchange="handleGallery(this)">
+      </div>
+      <div style="padding:0 16px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Photos sauvegardées</div>
+        <div id="photo-grid" class="photo-grid"></div>
+        <div id="photo-empty" style="text-align:center;padding:40px;color:var(--text3);font-size:13px">Aucune photo</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P4: MESSAGERIE -->
+  <div class="panel" id="p-4">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Messagerie</div>
+    </div>
+    <div class="panel-body" style="padding:16px">
+      <a href="https://wa.me/21620910909" target="_blank" style="background:linear-gradient(135deg,#25D366,#128C7E);border-radius:18px;padding:18px;display:flex;align-items:center;gap:14px;text-decoration:none;margin-bottom:14px;box-shadow:0 8px 24px rgba(37,211,102,.25)">
+        <div style="width:50px;height:50px;background:rgba(255,255,255,.2);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">💬</div>
+        <div style="flex:1"><div style="font-size:16px;font-weight:700;color:#fff">WhatsApp Business</div><div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">+216 20 910 909 · Principal</div></div>
+        <div style="color:rgba(255,255,255,.6);font-size:20px">›</div>
+      </a>
+      <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Réseaux sociaux</div>
+      <div style="display:flex;flex-direction:column;gap:9px" id="msg-links"></div>
+    </div>
+  </div>
+
+  <!-- P5: MARKETPLACE -->
+  <div class="panel" id="p-5">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Recherche Marché</div>
+    </div>
+    <div class="panel-body" style="padding:16px">
+      <div class="search-bar" style="margin-bottom:16px">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input placeholder="Rechercher équipement..." id="mkt-search" oninput="updateMktLinks()">
+      </div>
+      <div id="mkt-links"></div>
+    </div>
+  </div>
+
+  <!-- P6: PUBLIER -->
+  <div class="panel" id="p-6">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Publier</div>
+    </div>
+    <div class="panel-body" style="padding:16px" id="pub-body"></div>
+  </div>
+
+  <!-- P9: DEVIS/FACTURES -->
+  <div class="panel" id="p-9">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Devis & Factures</div>
+      <div style="display:flex;gap:7px">
+        <button class="btn btn-ghost btn-sm" onclick="openNewDoc('devis')">Devis</button>
+        <button class="btn btn-gold btn-sm" onclick="openNewDoc('facture')">Facture</button>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="inner-tabs">
+        <div class="itab on" id="dt-devis" onclick="docTab('devis')">📄 Devis</div>
+        <div class="itab" id="dt-facture" onclick="docTab('facture')">🧾 Factures</div>
+      </div>
+      <div style="padding:14px;padding-bottom:calc(80px + var(--safe-b))" id="doc-list"></div>
+    </div>
+  </div>
+
+  <!-- P10: GOOGLE LENS -->
+  <div class="panel" id="p-10">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Google Lens</div>
+    </div>
+    <div class="panel-body" style="padding:16px">
+      <div style="background:linear-gradient(135deg,#4285F4,#34A853,#FBBC04,#EA4335);border-radius:20px;padding:28px;text-align:center;margin-bottom:14px">
+        <div style="font-size:52px;margin-bottom:14px">🔍</div>
+        <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Google Lens</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.8);margin-bottom:18px">Identifiez équipements, lisez textes, trouvez prix</div>
+        <a href="https://lens.google.com" target="_blank" style="background:rgba(255,255,255,.9);color:#4285F4;border-radius:12px;padding:12px 24px;font-weight:700;font-size:14px;display:inline-block;text-decoration:none">Ouvrir Lens</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- P11: OUTILS -->
+  <div class="panel" id="p-11">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Outils Gratuits</div>
+    </div>
+    <div class="panel-body" style="padding:16px" id="tools-body"></div>
+  </div>
+
+  <!-- P12: MAPS -->
+  <div class="panel" id="p-12">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Maps & Navigation</div>
+    </div>
+    <div class="panel-body" style="padding:16px">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <a href="https://maps.google.com" target="_blank" class="link-item"><div class="link-ico" style="background:#4285F415">🗺️</div><div class="link-info"><div class="link-name">Google Maps</div><div class="link-sub">Navigation & itinéraire</div></div></a>
+        <a href="https://waze.com" target="_blank" class="link-item"><div class="link-ico" style="background:#00CBFE15">🚗</div><div class="link-info"><div class="link-name">Waze</div><div class="link-sub">Trafic en temps réel</div></div></a>
+        <a href="https://maps.google.com/maps/search/équipement+horeca+Tunis" target="_blank" class="link-item"><div class="link-ico" style="background:#34A85315">🍴</div><div class="link-info"><div class="link-name">Équipements CHR Tunis</div><div class="link-sub">Fournisseurs sur la carte</div></div></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- P13: CALCULATRICE -->
+  <div class="panel" id="p-13">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Calculatrice</div>
+    </div>
+    <div class="panel-body">
+      <div class="calc-disp">
+        <div class="calc-expr" id="cx"></div>
+        <div class="calc-val" id="cv">0</div>
+      </div>
+      <div class="calc-grid">
+        <div class="cb fn" onclick="cf('ac')">AC</div><div class="cb fn" onclick="cf('+/-')">±</div><div class="cb fn" onclick="cf('%')">%</div><div class="cb op" onclick="cf('/')">÷</div>
+        <div class="cb" onclick="cf('7')">7</div><div class="cb" onclick="cf('8')">8</div><div class="cb" onclick="cf('9')">9</div><div class="cb op" onclick="cf('*')">×</div>
+        <div class="cb" onclick="cf('4')">4</div><div class="cb" onclick="cf('5')">5</div><div class="cb" onclick="cf('6')">6</div><div class="cb op" onclick="cf('-')">−</div>
+        <div class="cb" onclick="cf('1')">1</div><div class="cb" onclick="cf('2')">2</div><div class="cb" onclick="cf('3')">3</div><div class="cb op" onclick="cf('+')">+</div>
+        <div class="cb zero" onclick="cf('0')">0</div><div class="cb" onclick="cf('.')">.</div><div class="cb eq" onclick="cf('=')">=</div>
+      </div>
+      <div style="padding:0 14px 16px">
+        <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Marge rapide</div>
+        <div class="g2">
+          <div class="field"><label>Coût DT</label><input id="mc" type="number" placeholder="0" oninput="calcM()"></div>
+          <div class="field"><label>Prix DT</label><input id="mp" type="number" placeholder="0" oninput="calcM()"></div>
+        </div>
+        <div id="mr" style="background:var(--goldb);border:1px solid rgba(212,136,10,.2);border-radius:12px;padding:12px;text-align:center;font-size:16px;font-weight:700;color:var(--gold2);display:none"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P14: ACTUALITÉS -->
+  <div class="panel" id="p-14">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Actualités</div>
+    </div>
+    <div class="panel-body" style="padding:14px" id="news-body"></div>
+  </div>
+
+  <!-- P15: RADIO -->
+  <div class="panel" id="p-15">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Radio</div>
+    </div>
+    <div class="panel-body" style="padding:14px" id="radio-list"></div>
+  </div>
+
+  <!-- P16: RÉPERTOIRE -->
+  <div class="panel" id="p-16">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Répertoire</div>
+      <button class="btn btn-gold btn-sm" onclick="openAddContact()">+ Contact</button>
+    </div>
+    <div class="panel-body">
+      <div class="inner-tabs">
+        <div class="itab on" id="rt-all" onclick="repTab('all')">Tous</div>
+        <div class="itab" id="rt-clients" onclick="repTab('clients')">Clients</div>
+        <div class="itab" id="rt-fournisseurs" onclick="repTab('fournisseurs')">Fournisseurs</div>
+      </div>
+      <div id="rep-list" style="padding-bottom:calc(80px + var(--safe-b))"></div>
+    </div>
+  </div>
+
+  <!-- P17: CONFIG -->
+  <div class="panel" id="p-17">
+    <div class="panel-hdr">
+      <div class="panel-back" onclick="closePanel()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="panel-ttl">Configuration</div>
+    </div>
+    <div class="panel-body" id="config-body"></div>
+  </div>
+
+  <!-- CATALOGUE FULLSCREEN -->
+  <div id="cat-full">
+    <div id="cf-slides"></div>
+    <div class="cf-close" onclick="closeCatFull()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+    <div class="cf-nav">
+      <div class="cf-nav-btn" onclick="cfNav(-1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div class="cf-nav-btn" onclick="cfNav(1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>
+    </div>
+    <div class="cf-dots" id="cf-dots"></div>
+  </div>
+
+  <!-- DOC FULLSCREEN -->
+  <div id="m-doc">
+    <div style="flex-shrink:0;background:rgba(8,8,26,.95);backdrop-filter:blur(20px);height:calc(var(--safe-t)+56px);display:flex;align-items:flex-end;padding:0 16px 12px;gap:12px;border-bottom:1px solid var(--border)">
+      <div onclick="closeDoc()" class="panel-back"><svg viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+      <div style="font-family:'Playfair Display',serif;font-size:17px;color:var(--text);flex:1" id="m-doc-ttl">Nouveau Devis</div>
+      <button class="btn btn-ghost btn-sm" onclick="printDoc()">🖨️</button>
+      <button class="btn btn-gold btn-sm" onclick="saveDoc()">Sauver</button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:16px">
+      <input type="hidden" id="dc-type"><input type="hidden" id="dc-id">
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-hd"><span class="card-t">👤 Client</span><button class="btn btn-ghost btn-sm" onclick="pickDocClient()">Choisir</button></div>
+        <div class="card-bd">
+          <div class="g2"><div class="field"><label>Nom</label><input id="dc-cnom" placeholder="Nom client"></div><div class="field"><label>Téléphone</label><input id="dc-ctel" placeholder="+216..."></div></div>
+          <div class="field" style="margin-bottom:0"><label>Adresse</label><input id="dc-cadr" placeholder="Adresse"></div>
+          <div id="dc-status-wrap" style="display:none;margin-top:10px"><div class="field" style="margin-bottom:0"><label>Paiement</label><select id="dc-status"><option value="pending">⏳ En attente</option><option value="partial">⚡ Partiel</option><option value="paid">✅ Payé</option></select></div></div>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-hd"><span class="card-t">📦 Articles</span><button class="btn btn-gold btn-sm" onclick="addDocLine()">+ Ligne</button></div>
+        <div id="dc-lines"></div>
+        <div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;background:var(--goldb);border-top:1px solid var(--border);border-radius:0 0 16px 16px">
+          <span style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase">TOTAL</span>
+          <span id="dc-total" style="font-size:24px;font-weight:700;color:var(--gold2);letter-spacing:-1px">0 DT</span>
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:12px">
+        <div class="card-bd">
+          <div class="field"><label>Notes</label><textarea id="dc-notes" rows="2" placeholder="Conditions..."></textarea></div>
+          <div class="field" style="margin-bottom:0"><label>Validité</label><input id="dc-valid" type="date"></div>
+        </div>
+      </div>
+      <!-- PARTAGER MULTI-RÉSEAUX -->
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-hd"><span class="card-t">📤 Partager sur tous les réseaux</span></div>
+        <div class="share-grid">
+          <div class="share-ico" onclick="shareDoc('wa')"><div class="share-ico-box" style="background:#25D36620">💬</div><div class="share-ico-lbl">WhatsApp</div></div>
+          <div class="share-ico" onclick="shareDoc('fb')"><div class="share-ico-box" style="background:#1877F220">📘</div><div class="share-ico-lbl">Facebook</div></div>
+          <div class="share-ico" onclick="shareDoc('ig')"><div class="share-ico-box" style="background:#E1306C20">📸</div><div class="share-ico-lbl">Instagram</div></div>
+          <div class="share-ico" onclick="shareDoc('tt')"><div class="share-ico-box" style="background:#01010120">🎵</div><div class="share-ico-lbl">TikTok</div></div>
+          <div class="share-ico" onclick="shareDoc('gm')"><div class="share-ico-box" style="background:#EA433520">📧</div><div class="share-ico-lbl">Gmail</div></div>
+          <div class="share-ico" onclick="shareDoc('copy')"><div class="share-ico-box" style="background:var(--goldb)">📋</div><div class="share-ico-lbl">Copier</div></div>
+          <div class="share-ico" onclick="shareDoc('nat')"><div class="share-ico-box" style="background:rgba(255,255,255,.06)">↗</div><div class="share-ico-lbl">Partager</div></div>
+          <div class="share-ico" onclick="shareDoc('all')"><div class="share-ico-box" style="background:var(--goldb)">🚀</div><div class="share-ico-lbl">Tout envoyer</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div id="tabbar">
+    <div class="tab on" id="tab-home" onclick="switchTab('home')">
+      <div class="tab-ico-wrap"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="tab-lbl">Accueil</div>
+    </div>
+    <div class="tab" id="tab-gest" onclick="switchTab('gest')">
+      <div class="tab-ico-wrap"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+      <div class="tab-lbl">Gestion</div>
+    </div>
+    <div class="tab" id="tab-cat" onclick="openCatFull()">
+      <div class="tab-ico-wrap"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+      <div class="tab-lbl">Catalogue</div>
+    </div>
+    <div class="tab" id="tab-docs" onclick="openPanel(9)">
+      <div class="tab-ico-wrap"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="tab-lbl">Devis</div>
+    </div>
+    <div class="tab" id="tab-more" onclick="switchTab('more')">
+      <div class="tab-ico-wrap"><svg viewBox="0 0 24 24" stroke-width="2.5"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg></div>
+      <div class="tab-lbl">Plus</div>
+    </div>
+  </div>
+
+  <!-- FLOATING BUTTONS (permanent) -->
+  <div id="float-btns">
+    <div class="float-btn-pill float-prayer" onclick="openPanel(1)" id="fb-prayer">
+      <div class="float-ico" style="background:var(--green2);position:relative">
+        🕌<div id="prayer-ring"></div>
+      </div>
+      <span id="fb-prayer-lbl">Prière</span>
+    </div>
+    <div class="float-btn-pill float-note" onclick="openQuickNote()">
+      <div class="float-ico" style="background:var(--goldb)">✏️</div>
+      <span>Note</span>
+    </div>
+  </div>
+
+  <!-- SHEETS -->
+  <div class="overlay" id="sh-stock">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-ttl"><span id="sh-st-ttl">Nouvel Article</span><span class="sh-x" onclick="closeOverlays()">✕</span></div>
+      <div class="sh-body">
+        <input type="hidden" id="sf-idx">
+        <div class="field"><label>Article *</label><input id="sf-art" placeholder="Description complète..."></div>
+        <div class="g2">
+          <div class="field"><label>Catégorie</label><select id="sf-cat"><option>Réfrig. vertical vitré</option><option>Vitrine réfrig.</option><option>Vitrine glace</option><option>Congélateur horiz vitré</option><option>Congélateur vertical vitré</option><option>Four pizza</option><option>Four pâtisserie</option><option>Machine café</option><option>Comptoir sandwich</option><option>Pétrin</option><option>Friteuse</option><option>Grillade</option><option>Mobilier</option><option>Divers</option></select></div>
+          <div class="field"><label>Statut</label><select id="sf-st"><option>✅ PRÊT</option><option>⭐ URGENT</option><option>🔵 Prioritaire</option><option>⏳ En cours</option><option>⚠ PERTE</option></select></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>Coût (DT)</label><input id="sf-cout" type="number" placeholder="0"></div>
+          <div class="field"><label>Prix (DT)</label><input id="sf-prix" type="number" placeholder="0"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>Date entrée</label><input id="sf-de" type="date"></div>
+          <div class="field"><label>Avancement %</label><input id="sf-av" type="number" min="0" max="100" placeholder="80"></div>
+        </div>
+        <div class="field"><label>Provenance</label><input id="sf-prov" placeholder="Ville / Région"></div>
+        <div class="field"><label>Travaux restants</label><textarea id="sf-trav" rows="2" placeholder="Travaux nécessaires..."></textarea></div>
+        <button class="btn btn-gold btn-full btn-lg" onclick="saveStock()">Enregistrer l'article</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="sh-vente">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-ttl"><span>Enregistrer une Vente</span><span class="sh-x" onclick="closeOverlays()">✕</span></div>
+      <div class="sh-body">
+        <div class="field"><label>Article</label><select id="vf-sel" onchange="fillVente()"><option value="">— Depuis stock —</option></select></div>
+        <div class="field"><input id="vf-art" placeholder="Ou saisir manuellement"></div>
+        <div class="g2">
+          <div class="field"><label>Coût (DT)</label><input id="vf-cout" type="number" oninput="prvM()"></div>
+          <div class="field"><label>Prix vendu (DT)</label><input id="vf-vendu" type="number" oninput="prvM()"></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>Type</label><select id="vf-typ"><option value="C">CHR</option><option value="L">Liquidation</option></select></div>
+          <div class="field"><label>Date</label><input id="vf-dv" type="date"></div>
+        </div>
+        <div class="field"><label>Acheteur</label><input id="vf-prov" placeholder="Nom · Ville"></div>
+        <div id="vf-prev" style="display:none;background:var(--goldb);border:1px solid rgba(212,136,10,.2);border-radius:12px;padding:12px;text-align:center;margin-bottom:14px">
+          <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Marge estimée</div>
+          <div id="vf-mval" style="font-size:28px;font-weight:700;color:var(--gold2);letter-spacing:-1px"></div>
+        </div>
+        <button class="btn btn-green btn-full btn-lg" onclick="saveVente()">✓ Confirmer la Vente</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="sh-contact">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-ttl"><span id="sh-ct-ttl">Nouveau Contact</span><span class="sh-x" onclick="closeOverlays()">✕</span></div>
+      <div class="sh-body">
+        <input type="hidden" id="ctf-id">
+        <div class="g2">
+          <div class="field"><label>Nom *</label><input id="ctf-nom" placeholder="Nom complet"></div>
+          <div class="field"><label>Téléphone</label><input id="ctf-tel" type="tel" placeholder="+216..."></div>
+        </div>
+        <div class="g2">
+          <div class="field"><label>Type</label><select id="ctf-type"><option value="contact">Contact</option><option value="client">Client</option><option value="fournisseur">Fournisseur</option></select></div>
+          <div class="field"><label>Ville</label><input id="ctf-zone" placeholder="Tunis, Radès..."></div>
+        </div>
+        <div class="field"><label>Note</label><input id="ctf-note" placeholder="Infos supplémentaires..."></div>
+        <button class="btn btn-gold btn-full btn-lg" onclick="saveContact()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="sh-note">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-ttl"><span id="sh-note-ttl">Nouvelle Note</span><span class="sh-x" onclick="closeOverlays()">✕</span></div>
+      <div class="sh-body">
+        <input type="hidden" id="nf-id">
+        <div class="field"><label>Titre</label><input id="nf-title" placeholder="Titre..."></div>
+        <div class="field"><label>Contenu</label><textarea id="nf-content" rows="7" placeholder="Votre note ici..."></textarea></div>
+        <button class="btn btn-gold btn-full btn-lg" onclick="saveNote()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIALOGS -->
+  <div class="dialog" id="dlg-exit">
+    <div class="dlg">
+      <div class="dlg-ico" style="background:var(--red2)">🚪</div>
+      <div class="dlg-t">Quitter ?</div>
+      <div class="dlg-s">Vos données sont sauvegardées.</div>
+      <div class="dlg-btns">
+        <button class="btn btn-ghost btn-full" onclick="closeOverlays()">Annuler</button>
+        <button class="btn btn-red btn-full" onclick="history.go(-history.length)">Quitter</button>
+      </div>
+    </div>
+  </div>
+  <div class="dialog" id="dlg-del">
+    <div class="dlg">
+      <div class="dlg-ico" style="background:var(--red2)">🗑️</div>
+      <div class="dlg-t">Supprimer ?</div>
+      <div class="dlg-s" id="dlg-del-txt">—</div>
+      <div class="dlg-btns">
+        <button class="btn btn-ghost btn-full" onclick="closeOverlays()">Annuler</button>
+        <button class="btn btn-red btn-full" id="dlg-del-ok">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toasts"></div>
+
+</div><!-- /main -->
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA & STORAGE
+// ═══════════════════════════════════════════════════
+const LD=(k,d)=>{try{const v=localStorage.getItem('shv4_'+k);return v?JSON.parse(v):d}catch{return d}};
+const SV=(k,v)=>{try{localStorage.setItem('shv4_'+k,JSON.stringify(v))}catch{}};
+
+// Default stock data
+const SD_DEF=[
+  {id:1,art:"Vitrine Glace Sanson FRAMEC ⭐",cat:"Vitrine glace",cout:800,prix:3500,av:.90,st:"⭐ URGENT",trav:"Fixation + polissage",prov:"Korba",de:"2025-07-29"},
+  {id:2,art:"Vitrine Glace ISA côte d'Or",cat:"Vitrine glace",cout:1500,prix:4000,av:.95,st:"⭐ URGENT",trav:"Finition → +2500 DT marge",prov:"Laouina",de:"2025-09-07"},
+  {id:3,art:"Four Pizza Empero #1",cat:"Four pizza",cout:1700,prix:2500,av:1.0,st:"✅ PRÊT",trav:"100% opérationnel",prov:"Montplaisir",de:"2025-11-25"},
+  {id:4,art:"Four Pizza Empero #2",cat:"Four pizza",cout:1700,prix:2500,av:1.0,st:"✅ PRÊT",trav:"100% opérationnel",prov:"Omrane",de:"2026-01-06"},
+  {id:5,art:"Comptoir Sandwich 2m marbre",cat:"Comptoir sandwich",cout:1300,prix:3300,av:.90,st:"🔵 Prioritaire",trav:"Mastique + polissage",prov:"Nabeul",de:"2026-02-16"},
+  {id:6,art:"Machine Café Reneka française",cat:"Machine café",cout:1500,prix:2000,av:.95,st:"🔵 Prioritaire",trav:"Polissage général",prov:"Laouina",de:"2025-09-07"},
+  {id:7,art:"Congélateur UGUR 1.5m horiz.",cat:"Congélateur horiz vitré",cout:700,prix:1200,av:1.0,st:"✅ PRÊT",trav:"Excellent état",prov:"Mornag",de:"2026-01-04"},
+  {id:8,art:"Four Pâtisserie 4 étages",cat:"Four pâtisserie",cout:1700,prix:2400,av:1.0,st:"✅ PRÊT",trav:"Polissage final",prov:"Sliman",de:"2026-01-11"},
+  {id:9,art:"Réfrig. vertical Président UGUR",cat:"Réfrig. vertical vitré",cout:900,prix:1400,av:.95,st:"🔵 Prioritaire",trav:"Socle + polissage",prov:"La Marsa",de:"2026-03-08"},
+  {id:10,art:"Friteuse neuve jamais utilisée",cat:"Friteuse",cout:500,prix:1000,av:1.0,st:"✅ PRÊT",trav:"Jamais utilisée",prov:"Mourouj 6",de:"2026-03-01"},
+];
+const VD_DEF=[
+  {id:1,art:"Machine café gaz + moulin",cout:3000,vendu:3500,dv:"2025-07-17",typ:"C",prov:"Mégrine",mois:"2025-07"},
+  {id:2,art:"Vitrine glace blindée ISA",cout:1700,vendu:3500,dv:"2025-07-15",typ:"C",prov:"Mahdia",mois:"2025-07"},
+  {id:3,art:"Congélateur UGUR jaune",cout:1000,vendu:1700,dv:"2025-10-01",typ:"C",prov:"Mhamdia",mois:"2025-10"},
+  {id:4,art:"Buffet réfrigéré 4 bacs",cout:1400,vendu:2500,dv:"2025-12-30",typ:"C",prov:"Laouina",mois:"2025-12"},
+  {id:5,art:"Réfrig. Coca Cola vertical",cout:950,vendu:1500,dv:"2025-10-10",typ:"C",prov:"Mhamdia",mois:"2025-10"},
+  {id:6,art:"Vitrine verticale 4 faces",cout:650,vendu:2150,dv:"2026-02-22",typ:"C",prov:"Tadhamon",mois:"2026-02"},
+  {id:7,art:"Pétrin 20L professionnel",cout:800,vendu:1800,dv:"2026-03-10",typ:"C",prov:"Sfax",mois:"2026-03"},
+];
+const CF_DEF={loyer:750,gasoil:300,internet:80,entretien:80,fond:30000,creance:15000,wa:'+21620910909'};
+const CONTACTS_DEF=[
+  {id:1,nom:"Mohsen",zone:"Mhamdia",tel:"+216 50 XXX XXX",type:"client",note:"VIP — priorité absolue"},
+  {id:2,nom:"Adel",zone:"Radès",tel:"+216 XX XXX XXX",type:"client",note:"Partenaire fidèle"},
+  {id:3,nom:"Zouhaier",zone:"Hammam Lif",tel:"+216 XX XXX XXX",type:"client",note:"Spécialiste glacé"},
+  {id:4,nom:"Transport Karim",zone:"Tunis",tel:"+216 XX XXX XXX",type:"fournisseur",note:"Transport rapide"},
+];
+
+let SD=LD('s',SD_DEF),VD=LD('v',VD_DEF),CF=LD('cfg',CF_DEF);
+let notes=LD('notes',[]),contacts=LD('contacts',CONTACTS_DEF),docsData=LD('docs',[]),docNum=LD('dn',1);
+let photos=LD('photos',[]);
+let docLines=[],curDocId=null,docTabA='devis',gTabA='stock',repTabA='all';
+let nS=100,nV=200,nC=10;
+let exitCount=0,exitTimer=null;
+let curPanel=null,activeTab='home';
+
+const SA=()=>{SV('s',SD);SV('v',VD);SV('cfg',CF);SV('notes',notes);SV('contacts',contacts);SV('docs',docsData);SV('dn',docNum);SV('photos',photos)};
+const fm=n=>new Intl.NumberFormat('fr-TN').format(Math.round(n))+' DT';
+const fd=d=>d?new Date(d+'T00:00').toLocaleDateString('fr-FR'):'—';
+const td=()=>new Date().toISOString().slice(0,10);
+const avi=s=>{const cs=['#D4880A','#22C55E','#60A5FA','#A78BFA','#EF4444','#2DD4BF'];let h=0;for(const c of(s||''))h+=c.charCodeAt(0);return cs[h%cs.length]};
+const ini=s=>(s||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+const BST={'✅ PRÊT':'b-pret','⭐ URGENT':'b-urg','🔵 Prioritaire':'b-pri','⏳ En cours':'b-enc','⚠ PERTE':'b-per'};
+const BSC={'✅ PRÊT':'pret','⭐ URGENT':'urg','🔵 Prioritaire':'pri','⏳ En cours':'enc','⚠ PERTE':'enc'};
+function catImg(cat){const cl=(cat||'').toLowerCase();if(cl.includes('glace'))return'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800&q=80&fit=crop';if(cl.includes('réfrig')||cl.includes('frigo'))return'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop';if(cl.includes('four'))return'https://images.unsplash.com/photo-1556909114-44e3e9399a2b?w=800&q=80&fit=crop';if(cl.includes('café'))return'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80&fit=crop';if(cl.includes('comptoir'))return'https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800&q=80&fit=crop';if(cl.includes('congélateur'))return'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80&fit=crop';if(cl.includes('friteuse'))return'https://images.unsplash.com/photo-1571091655789-405eb7a3a3a8?w=800&q=80&fit=crop';return'https://images.unsplash.com/photo-1581299894007-aaa50297cf16?w=800&q=80&fit=crop';}
+
+// ─── TOAST ───
+function toast(m,t=''){const el=document.createElement('div');el.className='toast '+(t||'');el.textContent=m;document.getElementById('toasts').appendChild(el);setTimeout(()=>el.style.opacity='0',2200);setTimeout(()=>el.remove(),2600)}
+function confirmDel(txt,cb){document.getElementById('dlg-del-txt').textContent=txt;document.getElementById('dlg-del-ok').onclick=()=>{closeOverlays();cb()};document.getElementById('dlg-del').classList.add('on')}
+
+// ─── STARS ───
+function makeStars(containerId,count=60){
+  const el=document.getElementById(containerId);if(!el)return;
+  for(let i=0;i<count;i++){const s=document.createElement('div');s.className='sp-star';const sz=Math.random()*3+1;s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${1.5+Math.random()*3}s;--del:${Math.random()*3}s`;el.appendChild(s)}
+}
+
+// ─── LIVING CATALOGUE BACKGROUND ───
+let bgIdx=0,bgTimer=null;
+function buildCatBg(){
+  const el=document.getElementById('cat-bg');if(!el)return;
+  const overlay=el.querySelector('.cat-bg-overlay');
+  el.querySelectorAll('.cat-bg-slide').forEach(e=>e.remove());
+  const imgs=SD.map(s=>catImg(s.cat));
+  const unique=[...new Set(imgs)];
+  unique.forEach((url,i)=>{
+    const div=document.createElement('div');
+    div.className='cat-bg-slide'+(i===0?' on':'');
+    div.style.backgroundImage=`url('${url}')`;
+    el.insertBefore(div,overlay);
+  });
+}
+function startBgRotation(){
+  if(bgTimer)clearInterval(bgTimer);
+  bgTimer=setInterval(()=>{
+    const slides=document.querySelectorAll('.cat-bg-slide');
+    if(!slides.length)return;
+    slides[bgIdx%slides.length].classList.remove('on');
+    bgIdx=(bgIdx+1)%slides.length;
+    slides[bgIdx].classList.add('on');
+  },5000);
+}
+
+// ─── CLOCK ───
+function updateClock(){
+  const now=new Date();
+  const el1=document.getElementById('hh-time');
+  const el2=document.getElementById('hh-date');
+  if(el1)el1.textContent=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+  if(el2)el2.textContent=now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+}
+setInterval(updateClock,10000);
+
+// ─── PRAYER ───
+const PR_FR=[['Fajr','الفجر'],['Lever','الشروق'],['Dhuhr','الظهر'],['Asr','العصر'],['Maghrib','المغرب'],['Isha','العشاء']];
+function calcPrayer(){
+  const now=new Date();const y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();
+  const jdn=(367*y-Math.floor(7*(y+Math.floor((m+9)/12))/4)+Math.floor(275*m/9)+d+1721013.5+(12/24));
+  const D=jdn-2451545;const g=(357.529+.98560028*D)%360;const q=(280.459+.98564736*D)%360;
+  const L=(q+2*.0167*Math.sin(g*Math.PI/180))*Math.PI/180;const e=(23.439-.00000036*D)*Math.PI/180;
+  const RA=Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L))/(15*Math.PI/180);
+  const dec=Math.asin(Math.sin(e)*Math.sin(L));const EqT=(q/15-((RA+360)%24));const lat=36.8*Math.PI/180;
+  const Dh=12-EqT+(10.18/15);
+  const ha=t=>Math.acos((Math.sin(t*Math.PI/180)-Math.sin(dec)*Math.sin(lat))/(Math.cos(dec)*Math.cos(lat)))*180/Math.PI/15;
+  const times=[Dh-ha(-18),Dh-ha(-.833),Dh,Dh+ha(Math.atan(1+Math.tan(Math.abs(lat-dec)))*180/Math.PI),Dh+ha(-.833),Dh+ha(-18)];
+  const fmt=h=>{const hr=Math.floor(h);const mn=Math.round((h-hr)*60);return`${String(hr).padStart(2,'0')}:${String(mn).padStart(2,'0')}`};
+  return times.map(fmt);
+}
+let prayerAlertShown=false;
+function updatePrayer(){
+  const times=calcPrayer();const now=new Date();const nm=now.getHours()*60+now.getMinutes();
+  let ni=0,nt=times[0];
+  for(let i=0;i<times.length;i++){const[h,mn]=times[i].split(':').map(Number);if(h*60+mn>nm){ni=i;nt=times[i];break}}
+  // Float button
+  const lbl=document.getElementById('fb-prayer-lbl');if(lbl)lbl.textContent=PR_FR[ni][0]+' '+nt;
+  const hpEl=document.getElementById('hh-prayer');if(hpEl)hpEl.textContent=PR_FR[ni][0]+' · '+nt;
+  // Check if prayer is in next 10 min
+  const[h,mn]=nt.split(':').map(Number);const diff=(h*60+mn)-nm;
+  if(diff>0&&diff<=10&&!prayerAlertShown){
+    prayerAlertShown=true;
+    const ring=document.getElementById('prayer-ring');if(ring){ring.style.display='block';setTimeout(()=>ring.style.display='none',3000)}
+    toast(`🕌 ${PR_FR[ni][0]} dans ${diff} min !`,'g');
+    try{const a=new AudioContext();const osc=a.createOscillator();const g=a.createGain();osc.connect(g);g.connect(a.destination);osc.frequency.value=440;g.gain.setValueAtTime(.3,a.currentTime);g.gain.exponentialRampToValueAtTime(.01,a.currentTime+.5);osc.start();osc.stop(a.currentTime+.5)}catch{}
+  }else if(diff>10)prayerAlertShown=false;
+  // Panel list
+  const pt=document.getElementById('pr-next-t');if(pt)pt.textContent=nt;
+  const pl2=document.getElementById('pr-next-l');if(pl2)pl2.textContent='Prochaine : '+PR_FR[ni][0]+' · '+PR_FR[ni][1];
+  const plist=document.getElementById('prayer-list');if(!plist)return;
+  plist.innerHTML=times.map((t,i)=>{
+    const[hh,mm]=t.split(':').map(Number);const past=hh*60+mm<nm;const next=i===ni;
+    return`<div class="pr-row" style="${next?'background:rgba(34,197,94,.05)':''}">
+      <div><div class="pr-name">${PR_FR[i][0]}</div><div class="pr-ar">${PR_FR[i][1]}</div></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        ${next?`<span style="font-size:9px;background:var(--green2);color:var(--green);border-radius:10px;padding:2px 8px;font-weight:700">Prochaine</span>`:''}
+        <div class="pr-time" style="color:${past?'var(--text3)':next?'var(--green)':'var(--gold2)'}">${t}</div>
+      </div>
+    </div>`}).join('');
+}
+function playAdhan(){
+  toast('🔊 Adhan — Connexion...','');
+  window.open('https://www.islamway.net','_blank');
+}
+
+// ─── APP ICONS ───
+const APPS={
+  1:{bg:'linear-gradient(145deg,#1C5C1C,#22C55E)',ico:'🕌',lbl:'Prière'},
+  2:{bg:'linear-gradient(145deg,#92400E,#D97706)',ico:'📝',lbl:'Notes'},
+  3:{bg:'linear-gradient(145deg,#4C1D95,#8B5CF6)',ico:'📷',lbl:'Photo'},
+  4:{bg:'linear-gradient(145deg,#064E3B,#25D366)',ico:'💬',lbl:'Messages'},
+  5:{bg:'linear-gradient(145deg,#1E3A5F,#1877F2)',ico:'🏪',lbl:'Marché'},
+  6:{bg:'linear-gradient(145deg,#831843,#E1306C)',ico:'📢',lbl:'Publier'},
+  7:{bg:'linear-gradient(145deg,#78350F,#D4880A)',ico:'📊',lbl:'Gestion'},
+  8:{bg:'linear-gradient(145deg,#0F4C4C,#2DD4BF)',ico:'📖',lbl:'Catalogue'},
+  9:{bg:'linear-gradient(145deg,#1E3A5F,#3B82F6)',ico:'📄',lbl:'Devis'},
+  10:{bg:'linear-gradient(145deg,#1A3A1A,#34A853)',ico:'🔍',lbl:'Lens'},
+  11:{bg:'linear-gradient(145deg,#1F2937,#4B5563)',ico:'🛠️',lbl:'Outils'},
+  12:{bg:'linear-gradient(145deg,#064E3B,#16A34A)',ico:'🗺️',lbl:'Maps'},
+  13:{bg:'linear-gradient(145deg,#2E1065,#7C3AED)',ico:'🧮',lbl:'Calc.'},
+  14:{bg:'linear-gradient(145deg,#7F1D1D,#DC2626)',ico:'📰',lbl:'Actus'},
+  15:{bg:'linear-gradient(145deg,#0F4C4C,#0D9488)',ico:'📻',lbl:'Radio'},
+  16:{bg:'linear-gradient(145deg,#1E3A5F,#2563EB)',ico:'👥',lbl:'Répertoire'},
+  17:{bg:'linear-gradient(145deg,#1F2937,#374151)',ico:'⚙️',lbl:'Config'},
+};
+const ACTIONS={1:"openPanel(1)",2:"openPanel(2)",3:"openPanel(3)",4:"openPanel(4)",5:"openPanel(5)",6:"openPanel(6)",7:"switchTab('gest')",8:"openCatFull()",9:"openPanel(9)",10:"openPanel(10)",11:"openPanel(11)",12:"openPanel(12)",13:"openPanel(13)",14:"openPanel(14)",15:"openPanel(15)",16:"openPanel(16)",17:"openPanel(17)"};
+const QUICK=[4,5,6,7,8,9,2,1];
+const ALL_MORE=[3,10,11,12,13,14,15,16,17];
+
+function buildTile(id){
+  const a=APPS[id];
+  return`<div class="app-tile" onclick="${ACTIONS[id]}">
+    <div class="app-icon" style="background:${a.bg}">${a.ico}</div>
+    <div class="app-lbl">${a.lbl}</div>
+  </div>`;
+}
+function buildGrids(){
+  document.getElementById('quick-grid').innerHTML=QUICK.map(buildTile).join('');
+  document.getElementById('all-grid').innerHTML=[3,10,11,12,13,14,15,16,17].map(buildTile).join('');
+  document.getElementById('more-grid').innerHTML=Object.keys(APPS).map(k=>buildTile(+k)).join('');
+}
+
+// ─── HOME KPIs + MINI CHART ───
+function buildHomeKPIs(){
+  const urg=SD.filter(s=>s.st==='⭐ URGENT').length;
+  const totMarge=VD.reduce((a,v)=>a+(v.vendu-v.cout),0);
+  document.getElementById('k-stock').textContent=SD.length;
+  document.getElementById('k-marge').textContent=(totMarge/1000).toFixed(1)+'k';
+  document.getElementById('k-clients').textContent=contacts.filter(c=>c.type==='client').length;
+  document.getElementById('home-alert-txt').textContent=urg>0?`${urg} article(s) URGENT — action requise`:`${SD.filter(s=>s.st==='✅ PRÊT').length} articles prêts · Stock valorisé ${fm(SD.reduce((a,s)=>a+s.prix,0))}`;
+  buildMiniChart();
+}
+function buildMiniChart(){
+  const now=new Date();const months=[];
+  for(let i=5;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months.push({key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,lbl:d.toLocaleDateString('fr-FR',{month:'short'})})}
+  const data=months.map(m=>VD.filter(v=>(v.mois||v.dv?.slice(0,7))===m.key).reduce((a,v)=>a+(v.vendu-v.cout),0));
+  const mx=Math.max(...data,1);
+  const barsEl=document.getElementById('home-bars');const mnEl=document.getElementById('home-months');
+  if(!barsEl)return;
+  barsEl.innerHTML=data.map((v,i)=>`<div class="chart-bar ${i===data.length-1?'active':''}" style="height:${Math.max(6,Math.round((v/mx)*55))}px" title="${fm(v)}"></div>`).join('');
+  mnEl.innerHTML=months.map(m=>`<div class="chart-month">${m.lbl}</div>`).join('');
+  const total=data.reduce((a,b)=>a+b,0);
+  const el=document.getElementById('home-chart-total');if(el)el.textContent=fm(total);
+}
+
+// ─── NAVIGATION ───
+function switchTab(tab){
+  activeTab=tab;
+  ['home','gest','more'].forEach(t=>{
+    const s=document.getElementById(t+'-scr');if(s){s.style.display='none';s.classList.remove('on')}
+    const tb=document.getElementById('tab-'+t);if(tb)tb.classList.remove('on');
+  });
+  closePanel();
+  if(tab==='home'){
+    const s=document.getElementById('home-scr');s.style.display='block';s.classList.add('on');
+    document.getElementById('tab-home').classList.add('on');
+  }else if(tab==='gest'){
+    const s=document.getElementById('gest-scr');s.style.display='flex';s.style.flexDirection='column';s.style.position='absolute';s.style.inset='0';s.style.bottom='var(--tabbar)';s.style.zIndex='1';
+    document.getElementById('tab-gest').classList.add('on');
+    rGestion();
+  }else if(tab==='more'){
+    const s=document.getElementById('more-scr');s.style.display='block';s.classList.add('on');
+    document.getElementById('tab-more').classList.add('on');
+  }
+}
+function openPanel(id){
+  curPanel=id;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p-'+id)?.classList.add('on');
+  const renders={1:updatePrayer,2:rNotes,3:rPhoto,4:rMsg,5:rMkt,6:rPublier,9:rDocs,11:rTools,14:rNews,15:rRadio,16:rRep,17:rConfig};
+  if(renders[id])renders[id]();
+}
+function closePanel(){if(curPanel){document.getElementById('p-'+curPanel)?.classList.remove('on');curPanel=null}}
+function closeOverlays(){document.querySelectorAll('.overlay.on,.dialog.on').forEach(e=>e.classList.remove('on'))}
+function closeDoc(){document.getElementById('m-doc').style.display='none'}
+
+// ─── BACK/EXIT ───
+window.addEventListener('popstate',()=>{
+  history.pushState(null,'',location.href);
+  const mDoc=document.getElementById('m-doc');if(mDoc.style.display==='flex'){closeDoc();return}
+  const ov=document.querySelector('.overlay.on');if(ov){ov.classList.remove('on');return}
+  const dlg=document.querySelector('.dialog.on');if(dlg){dlg.classList.remove('on');return}
+  if(curPanel){closePanel();return}
+  if(activeTab!=='home'){switchTab('home');return}
+  exitCount++;
+  if(exitCount===1){toast('Appuyer encore pour quitter');exitTimer=setTimeout(()=>exitCount=0,2500)}
+  else{clearTimeout(exitTimer);exitCount=0;document.getElementById('dlg-exit').classList.add('on')}
+});
+history.pushState(null,'',location.href);
+
+// ─── SWIPE ───
+let swX=0,swY=0;
+document.addEventListener('touchstart',e=>{swX=e.touches[0].clientX;swY=e.touches[0].clientY},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-swX;const dy=Math.abs(e.changedTouches[0].clientY-swY);
+  if(Math.abs(dx)>65&&dy<50){if(curPanel){closePanel();return}
+  const tabs=['home','gest','docs','more'];const i=tabs.indexOf(activeTab);
+  if(dx<0&&i<tabs.length-1)switchTab(tabs[i+1]);
+  else if(dx>0&&i>0)switchTab(tabs[i-1]);}
+},{passive:true});
+
+// ─── GESTION ───
+function rGestion(){
+  const urg=SD.filter(s=>s.st==='⭐ URGENT').length;
+  const totV=VD.reduce((a,v)=>a+(v.vendu-v.cout),0);
+  const totS=SD.reduce((a,s)=>a+s.prix,0);
+  document.getElementById('gest-kpis').innerHTML=`
+    <div class="mini-stat"><div class="mini-val" style="color:var(--gold2)">${fm(totS).replace(' DT','')}</div><div class="mini-lbl">Valeur Stock</div></div>
+    <div class="mini-stat"><div class="mini-val" style="color:var(--green)">${fm(totV).replace(' DT','')}</div><div class="mini-lbl">Bénéfices</div></div>
+    <div class="mini-stat"><div class="mini-val" style="color:${urg>0?'var(--red)':'var(--text)'}">${urg}</div><div class="mini-lbl">Urgents</div></div>
+  `;
+  gTab(gTabA);
+}
+function gTab(t){
+  gTabA=t;
+  ['stock','ventes','suivi','finance','clients'].forEach(x=>{const el=document.getElementById('gt-'+x);if(el)el.classList.toggle('on',x===t)});
+  const c=document.getElementById('gest-content');if(!c)return;
+  if(t==='stock')rStock(c);
+  else if(t==='ventes')rVentes(c);
+  else if(t==='suivi')rSuivi(c);
+  else if(t==='finance')rFinance(c);
+  else if(t==='clients')rClients(c);
+}
+
+// STOCK
+function rStock(c){
+  c.innerHTML=SD.map((s,i)=>`
+    <div class="stock-card ${BSC[s.st]||'enc'}" onclick="editStock(${i})">
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+        <img style="width:50px;height:50px;border-radius:10px;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.05)" src="${catImg(s.cat)}" loading="lazy">
+        <div style="flex:1">
+          <div style="font-size:12px;font-weight:600;color:var(--text);line-height:1.35">${s.art}</div>
+          <div style="font-size:9px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:.4px">${s.cat}</div>
+        </div>
+        <span class="badge ${BST[s.st]||'b-enc'}">${s.st}</span>
+      </div>
+      <div style="font-size:10px;color:var(--text3);margin-bottom:8px">${s.trav}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:17px;font-weight:700;color:var(--text);letter-spacing:-0.5px">${fm(s.prix)}</div>
+          <div style="font-size:9px;color:var(--text3)">Coût: ${fm(s.cout)}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:14px;font-weight:700;color:var(--green)">+${fm(s.prix-s.cout)}</div>
+          <div style="font-size:9px;color:var(--text3)">${s.prov||'—'}</div>
+        </div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${s.av*100}%"></div></div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn btn-green btn-sm" style="flex:1" onclick="event.stopPropagation();openVente(${i})">✓ Vendu</button>
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();shareStock(${i})">📤</button>
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();confirmDel('Supprimer?',()=>{SD.splice(${i},1);SA();rGestion()})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+function rVentes(c){
+  c.innerHTML=`<button class="btn btn-green btn-full" style="margin-bottom:14px" onclick="openAddVente()">+ Enregistrer une vente</button>`+
+  VD.slice().reverse().map((v,ri)=>{const i=VD.length-1-ri;const mg=v.vendu-v.cout;return`
+    <div class="stock-card ${mg>0?'pret':'enc'}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--text)">${v.art}</div><div style="font-size:9px;color:var(--text3);margin-top:2px">${fd(v.dv)} · ${v.prov||'—'}</div></div>
+        <button onclick="confirmDel('Supprimer?',()=>{VD.splice(${i},1);SA();rGestion()})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:16px;padding:0 0 0 8px">🗑</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:17px;font-weight:700;color:var(--text)">${fm(v.vendu)}</div><div style="font-size:9px;color:var(--text3)">Coût: ${fm(v.cout)}</div></div>
+        <div style="font-size:20px;font-weight:700;color:${mg>0?'var(--green)':'var(--red)'}">${mg>0?'+':''}${fm(mg)}</div>
+      </div>
+    </div>`}).join('');
+}
+
+// SUIVI MENSUEL/ANNUEL
+function rSuivi(c){
+  const now=new Date();
+  // Build 12 months data
+  const months12=[];
+  for(let i=11;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth()-i,1);months12.push({key:`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`,lbl:d.toLocaleDateString('fr-FR',{month:'short',year:'2-digit'})})}
+  const data12=months12.map(m=>VD.filter(v=>(v.mois||v.dv?.slice(0,7))===m.key).reduce((a,v)=>a+(v.vendu-v.cout),0));
+  const totA=data12.reduce((a,b)=>a+b,0);
+  const totV12=VD.filter(v=>{const ym=v.mois||v.dv?.slice(0,7)||'';return months12.some(m=>m.key===ym)}).reduce((a,v)=>a+v.vendu,0);
+  const avgM=totA/12;
+  c.innerHTML=`
+    <div class="mini-stat-row">
+      <div class="mini-stat"><div class="mini-val" style="color:var(--green)">${fm(totA)}</div><div class="mini-lbl">Total 12m</div></div>
+      <div class="mini-stat"><div class="mini-val" style="color:var(--gold2)">${fm(totV12)}</div><div class="mini-lbl">CA 12m</div></div>
+      <div class="mini-stat"><div class="mini-val" style="color:var(--blue)">${fm(avgM)}</div><div class="mini-lbl">Moy/mois</div></div>
+    </div>
+    <div class="card" style="margin-bottom:12px;padding:14px">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:12px">Bénéfices — 12 derniers mois</div>
+      <div style="display:flex;align-items:flex-end;gap:4px;height:100px">
+        ${(()=>{const mx=Math.max(...data12,1);return data12.map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+          <div style="font-size:7px;color:var(--text3);white-space:nowrap;transform:rotate(-45deg);transform-origin:center;height:20px;display:flex;align-items:flex-end">${v>0?fm(v).replace(' DT',''):'—'}</div>
+          <div style="flex:1;width:100%;border-radius:3px 3px 0 0;background:${v>0?'linear-gradient(to top,var(--gold),var(--gold3))':'rgba(239,68,68,.2)'};min-height:4px;height:${Math.max(4,Math.round(v/mx*60))}px"></div>
+          <div style="font-size:7px;color:var(--text3);white-space:nowrap;overflow:hidden;width:100%;text-align:center">${months12[i].lbl}</div>
+        </div>`)})()}
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-hd"><span class="card-t">📋 Détail mensuel</span></div>
+      <div>
+        ${months12.slice().reverse().map((m,ri)=>{const i=11-ri;const v=data12[i];const ca=VD.filter(x=>(x.mois||x.dv?.slice(0,7))===m.key).reduce((a,x)=>a+x.vendu,0);const nb=VD.filter(x=>(x.mois||x.dv?.slice(0,7))===m.key).length;return`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border)">
+          <div><div style="font-size:12px;font-weight:600;color:var(--text)">${m.lbl}</div><div style="font-size:9px;color:var(--text3)">${nb} vente(s) · CA ${fm(ca)}</div></div>
+          <div style="font-size:14px;font-weight:700;color:${v>0?'var(--green)':'var(--text3)'}">${v>0?'+':''}${fm(v)}</div>
+        </div>`}).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function rFinance(c){
+  const totM=VD.reduce((a,v)=>a+(v.vendu-v.cout),0);
+  const totC=CF.loyer+CF.gasoil+CF.internet+CF.entretien;
+  const net=totM-totC;
+  c.innerHTML=`
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-hd"><span class="card-t">📊 Synthèse</span></div>
+      <div class="card-bd">
+        ${[['Marge brute ventes',fm(totM),'var(--green)'],['Charges mensuelles',fm(totC),'var(--red)'],['Bénéfice net',fm(net),net>0?'var(--green)':'var(--red)'],['Fonds encaisse',fm(CF.fond),'var(--text)'],['Créances clients',fm(CF.creance),'var(--gold2)']].map(([l,v,col])=>`
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)">
+            <div style="font-size:12px;color:var(--text2)">${l}</div>
+            <div style="font-size:14px;font-weight:700;color:${col}">${v}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-t">⚙️ Charges mensuelles</span></div>
+      <div class="card-bd">
+        <div class="g2">
+          <div class="field"><label>Loyer</label><input type="number" value="${CF.loyer}" onchange="CF.loyer=+this.value;SA();rFinance(document.getElementById('gest-content'))"></div>
+          <div class="field"><label>Gasoil</label><input type="number" value="${CF.gasoil}" onchange="CF.gasoil=+this.value;SA();rFinance(document.getElementById('gest-content'))"></div>
+          <div class="field"><label>Internet</label><input type="number" value="${CF.internet}" onchange="CF.internet=+this.value;SA();rFinance(document.getElementById('gest-content'))"></div>
+          <div class="field"><label>Entretien</label><input type="number" value="${CF.entretien}" onchange="CF.entretien=+this.value;SA();rFinance(document.getElementById('gest-content'))"></div>
+          <div class="field"><label>Fonds encaisse</label><input type="number" value="${CF.fond}" onchange="CF.fond=+this.value;SA();rFinance(document.getElementById('gest-content'))"></div>
+          <div class="field"><label>Créances</label><input type="number" value="${CF.creance}" onchange="CF.creance=+this.value;SA();rFinance(document.getElementById('gest-content'))"></div>
+        </div>
+      </div>
+    </div>`;
+}
+function rClients(c){
+  const cls=contacts.filter(x=>x.type==='client');
+  c.innerHTML=`<button class="btn btn-gold btn-full" style="margin-bottom:14px" onclick="openAddContact()">+ Nouveau client</button>`+
+  cls.map((ct,i)=>`<div class="stock-card enc" onclick="if(ct.tel&&ct.tel.includes('X')){toast('Numéro à compléter','r')}else{window.open('tel:'+ct.tel)}">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="avatar" style="background:${avi(ct.nom)}">${ini(ct.nom)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${ct.nom}</div><div style="font-size:10px;color:var(--text3)">${ct.zone||''} · ${ct.note||''}</div></div>
+      <a href="https://wa.me/${(ct.tel||'').replace(/\D/g,'')}" target="_blank" style="width:32px;height:32px;background:rgba(37,211,102,.1);border-radius:16px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:16px" onclick="event.stopPropagation()">💬</a>
+    </div>
+  </div>`).join('');
+}
+
+// STOCK EDIT/ADD
+function editStock(i){
+  const s=SD[i];
+  document.getElementById('sf-idx').value=i;document.getElementById('sf-art').value=s.art;
+  document.getElementById('sf-cat').value=s.cat;document.getElementById('sf-st').value=s.st;
+  document.getElementById('sf-cout').value=s.cout;document.getElementById('sf-prix').value=s.prix;
+  document.getElementById('sf-de').value=s.de||'';document.getElementById('sf-av').value=Math.round(s.av*100);
+  document.getElementById('sf-prov').value=s.prov||'';document.getElementById('sf-trav').value=s.trav||'';
+  document.getElementById('sh-st-ttl').textContent='Modifier Article';
+  document.getElementById('sh-stock').classList.add('on');
+}
+function openAddStock(){
+  document.getElementById('sf-idx').value='';document.getElementById('sf-art').value='';
+  document.getElementById('sf-cout').value='';document.getElementById('sf-prix').value='';
+  document.getElementById('sf-de').value=td();document.getElementById('sf-av').value='80';
+  document.getElementById('sf-prov').value='';document.getElementById('sf-trav').value='';
+  document.getElementById('sh-st-ttl').textContent='Nouvel Article';
+  document.getElementById('sh-stock').classList.add('on');
+}
+function saveStock(){
+  const idx=document.getElementById('sf-idx').value;
+  const art=document.getElementById('sf-art').value.trim();if(!art){toast('Article requis','r');return}
+  const item={id:idx===''?Math.max(0,...SD.map(s=>s.id))+1:SD[+idx].id,art,cat:document.getElementById('sf-cat').value,st:document.getElementById('sf-st').value,cout:+document.getElementById('sf-cout').value||0,prix:+document.getElementById('sf-prix').value||0,de:document.getElementById('sf-de').value,av:(+document.getElementById('sf-av').value||80)/100,prov:document.getElementById('sf-prov').value,trav:document.getElementById('sf-trav').value};
+  if(idx==='')SD.push(item);else SD[+idx]=item;
+  SA();closeOverlays();rGestion();buildHomeKPIs();buildCatBg();toast('Enregistré ✓','g');
+}
+function shareStock(i){
+  const s=SD[i];
+  const txt=`🏪 SYNERGY HORECA — ${s.art}\n💰 Prix: ${fm(s.prix)}\n📍 ${s.prov||'Tunis'}\n📞 +216 20 910 909`;
+  openShareSheet(txt);
+}
+function openShareSheet(txt){
+  const el=document.createElement('div');el.className='overlay on';
+  el.innerHTML=`<div class="sheet"><div class="sh-handle"></div><div class="sh-ttl"><span>Partager sur</span><span class="sh-x" onclick="this.closest('.overlay').remove()">✕</span></div>
+    <div class="share-grid">
+      <div class="share-ico" onclick="window.open('https://wa.me/?text='+encodeURIComponent(${JSON.stringify(txt)}),'_blank');this.closest('.overlay').remove()"><div class="share-ico-box" style="background:#25D36620">💬</div><div class="share-ico-lbl">WhatsApp</div></div>
+      <div class="share-ico" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=https://synergy-horeca.tn&quote='+encodeURIComponent(${JSON.stringify(txt)}),'_blank');this.closest('.overlay').remove()"><div class="share-ico-box" style="background:#1877F220">📘</div><div class="share-ico-lbl">Facebook</div></div>
+      <div class="share-ico" onclick="window.open('https://www.instagram.com/','_blank');this.closest('.overlay').remove()"><div class="share-ico-box" style="background:#E1306C20">📸</div><div class="share-ico-lbl">Instagram</div></div>
+      <div class="share-ico" onclick="window.open('https://www.tiktok.com/','_blank');this.closest('.overlay').remove()"><div class="share-ico-box" style="background:rgba(255,255,255,.08)">🎵</div><div class="share-ico-lbl">TikTok</div></div>
+      <div class="share-ico" onclick="window.open('mailto:?subject=Synergy+Horeca&body='+encodeURIComponent(${JSON.stringify(txt)}),'_blank');this.closest('.overlay').remove()"><div class="share-ico-box" style="background:#EA433520">📧</div><div class="share-ico-lbl">Gmail</div></div>
+      <div class="share-ico" onclick="navigator.clipboard?.writeText(${JSON.stringify(txt)}).then(()=>{toast('Copié ✓','g')});this.closest('.overlay').remove()"><div class="share-ico-box" style="background:var(--goldb)">📋</div><div class="share-ico-lbl">Copier</div></div>
+      <div class="share-ico" onclick="if(navigator.share)navigator.share({text:${JSON.stringify(txt)}});this.closest('.overlay').remove()"><div class="share-ico-box" style="background:rgba(255,255,255,.06)">↗</div><div class="share-ico-lbl">Partager</div></div>
+      <div class="share-ico" onclick="window.open('https://www.facebook.com/marketplace/create','_blank');this.closest('.overlay').remove()"><div class="share-ico-box" style="background:#1877F215">🏪</div><div class="share-ico-lbl">Marketplace</div></div>
+    </div>
+  </div>`;
+  document.body.appendChild(el);
+}
+
+// VENTES
+function openAddVente(){
+  document.getElementById('vf-art').value='';document.getElementById('vf-cout').value='';
+  document.getElementById('vf-vendu').value='';document.getElementById('vf-dv').value=td();
+  document.getElementById('vf-prov').value='';document.getElementById('vf-prev').style.display='none';
+  const sel=document.getElementById('vf-sel');sel.innerHTML='<option value="">— Depuis stock —</option>'+SD.map((s,i)=>`<option value="${i}">${s.art.slice(0,40)}</option>`).join('');
+  document.getElementById('sh-vente').classList.add('on');
+}
+function openVente(i){openAddVente();document.getElementById('vf-sel').value=i;fillVente()}
+function fillVente(){const idx=document.getElementById('vf-sel').value;if(idx==='')return;const s=SD[+idx];document.getElementById('vf-art').value=s.art;document.getElementById('vf-cout').value=s.cout;document.getElementById('vf-vendu').value=s.prix;prvM()}
+function prvM(){const c=+document.getElementById('vf-cout').value||0,v=+document.getElementById('vf-vendu').value||0;if(!c&&!v)return;const mg=v-c;document.getElementById('vf-prev').style.display='block';document.getElementById('vf-mval').textContent=fm(mg);document.getElementById('vf-mval').style.color=mg>0?'var(--green)':'var(--red)'}
+function saveVente(){
+  const art=(document.getElementById('vf-sel').value!==''?SD[+document.getElementById('vf-sel').value]?.art:document.getElementById('vf-art').value)||'Article';
+  const cout=+document.getElementById('vf-cout').value||0,vendu=+document.getElementById('vf-vendu').value||0;
+  if(!vendu){toast('Prix vendu requis','r');return}
+  const dv=document.getElementById('vf-dv').value;
+  const item={id:Math.max(0,...VD.map(v=>v.id))+1,art,cout,vendu,dv,mois:dv?.slice(0,7),typ:document.getElementById('vf-typ').value,prov:document.getElementById('vf-prov').value};
+  const idx=document.getElementById('vf-sel').value;if(idx!=='')SD.splice(+idx,1);
+  VD.push(item);SA();closeOverlays();rGestion();buildHomeKPIs();buildCatBg();toast('Vente enregistrée ✓','g');
+}
+
+// ─── NOTES ───
+function rNotes(){
+  const el=document.getElementById('notes-list');if(!el)return;
+  if(!notes.length){el.innerHTML='<div style="text-align:center;padding:48px;color:var(--text3)"><div style="font-size:48px;margin-bottom:14px">📝</div><div style="font-size:14px;font-weight:600">Aucune note</div></div>';return}
+  el.innerHTML=notes.slice().reverse().map((n,ri)=>{const i=notes.length-1-ri;return`
+    <div class="note-card">
+      <div onclick="openEditNote(${i})">
+        <div style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px">${n.title||'Sans titre'}</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${n.content||''}</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:8px">${fd(n.date)}</div>
+      </div>
+      <div onclick="confirmDel('Supprimer note?',()=>{notes.splice(${i},1);SA();rNotes()})" style="position:absolute;top:12px;right:12px;width:26px;height:26px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);font-size:13px">✕</div>
+    </div>`}).join('');
+}
+function openNewNote(){document.getElementById('nf-id').value='';document.getElementById('nf-title').value='';document.getElementById('nf-content').value='';document.getElementById('sh-note-ttl').textContent='Nouvelle Note';document.getElementById('sh-note').classList.add('on')}
+function openEditNote(i){const n=notes[i];document.getElementById('nf-id').value=i;document.getElementById('nf-title').value=n.title||'';document.getElementById('nf-content').value=n.content||'';document.getElementById('sh-note-ttl').textContent='Modifier Note';document.getElementById('sh-note').classList.add('on')}
+function openQuickNote(){if(curPanel)closePanel();openNewNote()}
+function saveNote(){const idx=document.getElementById('nf-id').value;const note={title:document.getElementById('nf-title').value.trim()||'Sans titre',content:document.getElementById('nf-content').value,date:td()};if(idx==='')notes.push(note);else notes[+idx]=note;SA();closeOverlays();rNotes();toast('Note sauvegardée ✓','g')}
+
+// ─── PHOTO ───
+function rPhoto(){const pg=document.getElementById('photo-grid');const pe=document.getElementById('photo-empty');if(!pg)return;if(!photos.length){pg.style.display='none';if(pe)pe.style.display='block';return}if(pe)pe.style.display='none';pg.style.display='grid';pg.innerHTML=photos.map((_,i)=>`<img class="photo-thumb" src="${photos[i]}" loading="lazy" onclick="window.open(photos[${i}])">`).join('')}
+function handlePhoto(inp){if(!inp.files.length)return;const fr=new FileReader();fr.onload=e=>{photos.unshift(e.target.result);SA();rPhoto();toast('Photo sauvegardée ✓','g')};fr.readAsDataURL(inp.files[0]);inp.value=''}
+function handleGallery(inp){[...inp.files].forEach(f=>{const fr=new FileReader();fr.onload=e=>{photos.unshift(e.target.result);SA();rPhoto()};fr.readAsDataURL(f)});inp.value='';toast(`${inp.files.length} photo(s)`,'g')}
+
+// ─── MESSAGERIE ───
+function rMsg(){
+  const el=document.getElementById('msg-links');if(!el)return;
+  const links=[
+    {url:'https://m.me',bg:'#1877F2',ico:'💬',n:'Messenger',s:'Messages Facebook'},
+    {url:'https://www.instagram.com/direct/inbox/',bg:'#E1306C',ico:'📸',n:'Instagram DM',s:'Messages directs'},
+    {url:'https://www.tiktok.com/messages',bg:'#010101',ico:'🎵',n:'TikTok',s:'Messagerie TikTok'},
+    {url:'https://mail.google.com',bg:'#EA4335',ico:'📧',n:'Gmail',s:'Email professionnel'},
+    {url:'https://business.facebook.com/inbox',bg:'#0082FB',ico:'📊',n:'Meta Business',s:'FB + IG centralisés'},
+  ];
+  el.innerHTML=links.map(l=>`<a href="${l.url}" target="_blank" class="link-item"><div class="link-ico" style="background:${l.bg}20;font-size:20px">${l.ico}</div><div class="link-info"><div class="link-name">${l.n}</div><div class="link-sub">${l.s}</div></div></a>`).join('');
+}
+
+// ─── MARKETPLACE ───
+function rMkt(){
+  const q=document.getElementById('mkt-search')?.value||'';
+  updateMktLinks(q);
+}
+function updateMktLinks(q=''){
+  const el=document.getElementById('mkt-links');if(!el)return;
+  const base=q||'équipement horeca occasion';
+  const enc=encodeURIComponent(base);
+  const links=[
+    {url:`https://www.facebook.com/marketplace/search?query=${enc}`,bg:'#1877F2',ico:'🏪',n:'Facebook Marketplace',s:'Recherche: '+base},
+    {url:`https://www.tayara.tn/search?q=${enc}`,bg:'#E21414',ico:'📱',n:'Tayara.tn',s:'Petites annonces Tunisie'},
+    {url:`https://www.jumia.com.tn/catalog/?q=${enc}`,bg:'#F68B1E',ico:'🛒',n:'Jumia Tunisie',s:'E-commerce Tunisie'},
+    {url:`https://www.facebook.com/marketplace/tunis`,bg:'#1877F2',ico:'📍',n:'Marketplace Tunis',s:'Annonces locales'},
+  ];
+  el.innerHTML=links.map(l=>`<a href="${l.url}" target="_blank" class="link-item" style="margin-bottom:9px"><div class="link-ico" style="background:${l.bg}15;font-size:20px">${l.ico}</div><div class="link-info"><div class="link-name">${l.n}</div><div class="link-sub">${l.s}</div></div></a>`).join('');
+}
+
+// ─── PUBLIER ───
+function rPublier(){
+  const el=document.getElementById('pub-body');if(!el)return;
+  const tpls=['Vitrine glace neuve','Four pizza 2 niveaux','Machine café pro','Comptoir sandwich','Congélateur vitré'];
+  el.innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:16px">
+      <a href="https://www.facebook.com/marketplace/create" target="_blank" style="background:linear-gradient(135deg,#1877F2,#4267B2);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px;text-decoration:none;box-shadow:0 6px 20px rgba(24,119,242,.25)">
+        <div style="width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🏪</div>
+        <div style="flex:1"><div style="font-size:15px;font-weight:700;color:#fff">Marketplace Facebook</div><div style="font-size:11px;color:rgba(255,255,255,.7)">Annonce + photos + prix</div></div>
+        <div style="color:rgba(255,255,255,.6);font-size:20px">›</div>
+      </a>
+      <a href="https://www.tayara.tn" target="_blank" class="link-item"><div class="link-ico" style="background:#E2141415;font-size:20px">📱</div><div class="link-info"><div class="link-name">Tayara.tn</div><div class="link-sub">Petites annonces Tunisie</div></div></a>
+      <a href="https://www.instagram.com" target="_blank" class="link-item"><div class="link-ico" style="background:#E1306C15;font-size:20px">📸</div><div class="link-info"><div class="link-name">Instagram</div><div class="link-sub">Post ou Story</div></div></a>
+      <a href="https://www.tiktok.com/upload" target="_blank" class="link-item"><div class="link-ico" style="background:rgba(255,255,255,.05);font-size:20px">🎵</div><div class="link-info"><div class="link-name">TikTok Vidéo</div><div class="link-sub">Vidéo courte produit</div></div></a>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Modèles d'annonces rapides</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px">
+      ${tpls.map(t=>`<div onclick="genPub('${t}')" style="background:var(--goldb);border:1px solid rgba(212,136,10,.2);border-radius:10px;padding:8px 12px;font-size:11px;font-weight:600;color:var(--gold2);cursor:pointer">📋 ${t}</div>`).join('')}
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="field"><label>Annonce personnalisée</label><textarea id="pub-txt" rows="4" placeholder="Tapez votre annonce..."></textarea></div>
+      <button class="btn btn-gold btn-full" onclick="openShareSheet(document.getElementById('pub-txt').value||'Synergy Horeca — +216 20 910 909')">📤 Partager partout</button>
+    </div>`;
+}
+function genPub(t){
+  const txt=`🏪 À VENDRE — ${t}\n✅ Équipement professionnel d'occasion\n💰 Prix négociable\n📍 Tunis · Livraison possible\n📞 +216 20 910 909 (Synergy Horeca)`;
+  const el=document.getElementById('pub-txt');if(el)el.value=txt;
+  navigator.clipboard?.writeText(txt).then(()=>toast('Modèle copié ✓','g'));
+}
+
+// ─── CATALOGUE FULLSCREEN ───
+let cfIdx=0;
+function openCatFull(){
+  cfIdx=0;buildCatFull();document.getElementById('cat-full').classList.add('on');
+}
+function closeCatFull(){document.getElementById('cat-full').classList.remove('on')}
+function buildCatFull(){
+  const el=document.getElementById('cf-slides');if(!el)return;
+  const all=[...SD,...VD.map(v=>({...v,art:v.art+'  ✅ VENDU',st:'✅ VENDU',prix:v.vendu}))];
+  el.innerHTML=all.map((s,i)=>`
+    <div class="cf-slide ${i===0?'on':''}" id="cf-${i}">
+      <img class="cf-img" src="${catImg(s.cat||'')}" loading="lazy" alt="${s.art}">
+      <div class="cf-info">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+          <div style="font-size:10px;font-weight:700;color:var(--gold2);text-transform:uppercase;letter-spacing:.5px">${s.cat||'Article vendu'}</div>
+          <span class="badge ${BST[s.st]||'b-enc'}">${s.st||'—'}</span>
+        </div>
+        <div style="font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px;margin-bottom:6px">${s.art}</div>
+        <div style="font-size:24px;font-weight:800;color:var(--gold2);letter-spacing:-1px;margin-bottom:3px">${fm(s.prix||0)}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Coût: ${fm(s.cout||0)} · +${fm((s.prix||0)-(s.cout||0))} · ${s.prov||'Tunis'}</div>
+        <div class="cf-share-row">
+          <div class="cf-share-btn" style="background:rgba(37,211,102,.15);color:#25D366" onclick="shareStockCat(${i})">💬 WhatsApp</div>
+          <div class="cf-share-btn" style="background:rgba(24,119,242,.15);color:#60A5FA" onclick="window.open('https://www.facebook.com/marketplace/create','_blank')">🏪 Marketplace</div>
+          <div class="cf-share-btn" style="background:var(--goldb);color:var(--gold2)" onclick="shareStockCatAll(${i})">🚀 Partout</div>
+        </div>
+      </div>
+    </div>`).join('');
+  buildCfDots(all.length);
+}
+function buildCfDots(n){const el=document.getElementById('cf-dots');if(!el)return;el.innerHTML=Array.from({length:n},(_,i)=>`<div class="cf-dot ${i===0?'on':''}" onclick="goSlide(${i})"></div>`).join('')}
+function goSlide(i){
+  const all=document.querySelectorAll('.cf-slide');
+  all[cfIdx]?.classList.remove('on');
+  cfIdx=Math.max(0,Math.min(i,all.length-1));
+  all[cfIdx]?.classList.add('on');
+  document.querySelectorAll('.cf-dot').forEach((d,j)=>d.classList.toggle('on',j===cfIdx));
+}
+function cfNav(d){goSlide(cfIdx+d)}
+function shareStockCat(i){const all=[...SD,...VD.map(v=>({...v,prix:v.vendu}))];const s=all[i];const txt=`🏪 SYNERGY HORECA\n${s.art}\n💰 ${fm(s.prix||0)}\n📍 ${s.prov||'Tunis'}\n📞 +216 20 910 909`;window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank')}
+function shareStockCatAll(i){const all=[...SD,...VD.map(v=>({...v,prix:v.vendu}))];const s=all[i];openShareSheet(`🏪 SYNERGY HORECA\n${s.art}\n💰 ${fm(s.prix||0)}\n📍 ${s.prov||'Tunis'}\n📞 +216 20 910 909`)}
+// Swipe catalogue
+let cfSwX=0;
+document.addEventListener('touchstart',e=>{if(document.getElementById('cat-full').classList.contains('on'))cfSwX=e.touches[0].clientX},{passive:true});
+document.addEventListener('touchend',e=>{if(!document.getElementById('cat-full').classList.contains('on'))return;const dx=e.changedTouches[0].clientX-cfSwX;if(Math.abs(dx)>50)cfNav(dx<0?1:-1)},{passive:true});
+
+// ─── DOCS ───
+function rDocs(){docTab(docTabA)}
+function docTab(t){
+  docTabA=t;
+  ['devis','facture'].forEach(x=>{const el=document.getElementById('dt-'+x);if(el)el.classList.toggle('on',x===t)});
+  const el=document.getElementById('doc-list');if(!el)return;
+  const list=docsData.filter(d=>d.type===t);
+  if(!list.length){el.innerHTML=`<div style="text-align:center;padding:48px;color:var(--text3)"><div style="font-size:48px;margin-bottom:14px">${t==='devis'?'📄':'🧾'}</div><div style="font-size:14px;font-weight:600">Aucun ${t}</div><button class="btn btn-gold" style="margin-top:14px" onclick="openNewDoc('${t}')">Créer</button></div>`;return}
+  el.innerHTML=list.slice().reverse().map(d=>`<div class="stock-card enc" onclick="openEditDoc('${d.id}')">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <div style="font-size:11px;font-weight:700;color:var(--gold2)">${d.num}</div>
+      <div style="font-size:10px;color:var(--text3)">${fd(d.date)}</div>
+    </div>
+    <div style="font-size:14px;font-weight:600;color:var(--text)">${d.client||'Client —'}</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+      <div style="font-size:18px;font-weight:700;color:var(--text)">${fm(d.total)}</div>
+      <span class="badge ${d.status==='paid'?'b-pret':d.status==='partial'?'b-pri':'b-enc'}">${d.status==='paid'?'✅ Payé':d.status==='partial'?'⚡ Partiel':'⏳ Attente'}</span>
+    </div>
+  </div>`).join('');
+}
+function openNewDoc(type){curDocId=null;docLines=[];document.getElementById('dc-type').value=type;document.getElementById('dc-id').value='';document.getElementById('dc-cnom').value='';document.getElementById('dc-ctel').value='';document.getElementById('dc-cadr').value='';document.getElementById('dc-notes').value='';document.getElementById('dc-valid').value='';document.getElementById('dc-status-wrap').style.display=type==='facture'?'block':'none';document.getElementById('m-doc-ttl').textContent='Nouveau '+(type==='devis'?'Devis':'Facture');document.getElementById('dc-lines').innerHTML='';document.getElementById('dc-total').textContent='0 DT';document.getElementById('m-doc').style.display='flex'}
+function openEditDoc(id){const d=docsData.find(x=>x.id===id);if(!d)return;curDocId=id;docLines=d.lines||[];document.getElementById('dc-type').value=d.type;document.getElementById('dc-cnom').value=d.client||'';document.getElementById('dc-ctel').value=d.tel||'';document.getElementById('dc-cadr').value=d.adr||'';document.getElementById('dc-notes').value=d.notes||'';document.getElementById('dc-valid').value=d.valid||'';document.getElementById('dc-status-wrap').style.display=d.type==='facture'?'block':'none';if(d.status)document.getElementById('dc-status').value=d.status;document.getElementById('m-doc-ttl').textContent=(d.type==='devis'?'Devis ':'Facture ')+d.num;renderDocLines();document.getElementById('m-doc').style.display='flex'}
+function addDocLine(){docLines.push({desc:'',qty:1,pu:0});renderDocLines()}
+function renderDocLines(){
+  const el=document.getElementById('dc-lines');if(!el)return;
+  el.innerHTML=docLines.map((l,i)=>`<div class="doc-line-row">
+    <div class="field" style="margin-bottom:6px"><input value="${l.desc}" placeholder="Description" onchange="docLines[${i}].desc=this.value;calcDocTotal()"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:center">
+      <div class="field" style="margin:0"><label>Qté</label><input type="number" value="${l.qty}" oninput="docLines[${i}].qty=+this.value;calcDocTotal()"></div>
+      <div class="field" style="margin:0"><label>Prix u.</label><input type="number" value="${l.pu}" oninput="docLines[${i}].pu=+this.value;calcDocTotal()"></div>
+      <button onclick="docLines.splice(${i},1);renderDocLines()" style="background:var(--red2);border:none;color:var(--red);border-radius:8px;padding:8px;cursor:pointer;margin-top:18px">✕</button>
+    </div>
+  </div>`).join('');
+  calcDocTotal();
+}
+function calcDocTotal(){const t=docLines.reduce((a,l)=>a+l.qty*l.pu,0);const el=document.getElementById('dc-total');if(el)el.textContent=fm(t)}
+function saveDoc(){
+  const type=document.getElementById('dc-type').value;
+  const total=docLines.reduce((a,l)=>a+l.qty*l.pu,0);
+  const doc={id:curDocId||('D'+Date.now()),type,num:(type==='devis'?'DEV-':'FAC-')+String(docNum++).padStart(3,'0'),date:td(),client:document.getElementById('dc-cnom').value,tel:document.getElementById('dc-ctel').value,adr:document.getElementById('dc-cadr').value,notes:document.getElementById('dc-notes').value,valid:document.getElementById('dc-valid').value,lines:[...docLines],total,status:type==='facture'?(document.getElementById('dc-status').value||'pending'):'pending'};
+  if(curDocId){const idx=docsData.findIndex(d=>d.id===curDocId);if(idx>=0)docsData[idx]=doc}else docsData.push(doc);
+  SA();closeDoc();rDocs();toast('Document sauvegardé ✓','g');
+}
+function printDoc(){window.print()}
+function shareDoc(m){
+  const type=document.getElementById('dc-type').value;const client=document.getElementById('dc-cnom').value;
+  const total=docLines.reduce((a,l)=>a+l.qty*l.pu,0);
+  const txt=`📄 ${type.toUpperCase()} — Synergy Horeca\n👤 ${client}\n💰 Total: ${fm(total)}\nDate: ${fd(td())}\n\nSynergy Horeca Equipment · +216 20 910 909`;
+  if(m==='wa')window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  else if(m==='fb')window.open('https://www.facebook.com/sharer/sharer.php?quote='+encodeURIComponent(txt),'_blank');
+  else if(m==='ig')window.open('https://www.instagram.com/','_blank');
+  else if(m==='tt')window.open('https://www.tiktok.com/','_blank');
+  else if(m==='gm')window.open('mailto:?subject=Devis+Synergy+Horeca&body='+encodeURIComponent(txt),'_blank');
+  else if(m==='copy')navigator.clipboard?.writeText(txt).then(()=>toast('Copié ✓','g'));
+  else if(m==='nat'&&navigator.share)navigator.share({text:txt});
+  else if(m==='all'){openShareSheet(txt)}
+}
+function pickDocClient(){
+  const el=document.createElement('div');el.className='overlay on';
+  el.innerHTML=`<div class="sheet"><div class="sh-handle"></div><div class="sh-ttl"><span>Choisir un client</span><span class="sh-x" onclick="this.closest('.overlay').remove()">✕</span></div>
+    <div style="padding:14px;max-height:60vh;overflow-y:auto">
+      ${contacts.filter(c=>c.type==='client').map(c=>`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;margin-bottom:9px;cursor:pointer" onclick="document.getElementById('dc-cnom').value='${c.nom}';document.getElementById('dc-ctel').value='${c.tel||''}';this.closest('.overlay').remove()">
+        <div class="avatar" style="background:${avi(c.nom)}">${ini(c.nom)}</div>
+        <div><div style="font-size:14px;font-weight:600;color:var(--text)">${c.nom}</div><div style="font-size:11px;color:var(--text3)">${c.zone||''} · ${c.tel||''}</div></div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+  document.body.appendChild(el);
+}
+
+// ─── TOOLS ───
+function rTools(){
+  const el=document.getElementById('tools-body');if(!el)return;
+  const tools=[{u:'https://docs.google.com',c:'#4285F4',i:'📝',n:'Google Docs',s:'Traitement de texte'},{u:'https://sheets.google.com',c:'#34A853',i:'📊',n:'Google Sheets',s:'Tableur'},{u:'https://drive.google.com',c:'#FBBC04',i:'☁️',n:'Google Drive',s:'Stockage cloud'},{u:'https://canva.com',c:'#7C3AED',i:'🎨',n:'Canva',s:'Design graphique'},{u:'https://pinterest.com',c:'#E60023',i:'📌',n:'Pinterest',s:'Inspiration visuelle'},{u:'https://trello.com',c:'#2563EB',i:'✅',n:'Trello',s:'Gestion tâches'},{u:'https://manychat.com',c:'#0D9488',i:'🤖',n:'ManyChat',s:'Chatbot auto'},{u:'https://qr.io',c:'#1F2937',i:'⬛',n:'QR Code',s:'Générateur'},{u:'https://wetransfer.com',c:'#22C55E',i:'📤',n:'WeTransfer',s:'Envoi fichiers'}];
+  el.innerHTML=tools.map(t=>`<a href="${t.u}" target="_blank" class="link-item" style="margin-bottom:9px"><div class="link-ico" style="background:${t.c}15;font-size:20px">${t.i}</div><div class="link-info"><div class="link-name">${t.n}</div><div class="link-sub">${t.s}</div></div></a>`).join('');
+}
+
+// ─── NEWS ───
+function rNews(){
+  const el=document.getElementById('news-body');if(!el)return;
+  const src=[{u:'https://www.lapresse.tn',c:'#DC2626',i:'📰',n:'La Presse TN',s:'Tunisie'},{u:'https://www.businessnews.com.tn',c:'#2563EB',i:'💼',n:'Business News',s:'Économie'},{u:'https://www.mosaiquefm.net',c:'#D4880A',i:'📻',n:'Mosaique FM',s:'Actualité'},{u:'https://www.reuters.com',c:'#FF8800',i:'🌍',n:'Reuters',s:'International'},{u:'https://www.aljazeera.net/ar',c:'#007A3D',i:'🌙',n:'Al Jazeera',s:'عربي'},{u:'https://www.facebook.com/groups',c:'#1877F2',i:'🏪',n:'CHR Tunisie',s:'Groupe professionnel'}];
+  el.innerHTML=src.map(s=>`<a href="${s.u}" target="_blank" class="link-item" style="margin-bottom:10px"><div class="link-ico" style="background:${s.c}15;font-size:20px">${s.i}</div><div class="link-info"><div class="link-name">${s.n}</div><div class="link-sub">${s.s}</div></div></a>`).join('');
+}
+
+// ─── RADIO ───
+const RADIOS=[{n:'Mosaique FM',url:'http://streaming.mosaiquefm.net/mosaikfm',fm:'98.0 FM',c:'#D4880A'},{n:'Jawhara FM',url:'http://stream.jawharafm.net:8000/jawhara.mp3',fm:'98.5 FM',c:'#7C3AED'},{n:'RTCI',url:'http://rtci.radio.fr/aac',fm:'104.3 FM',c:'#2563EB'},{n:'Express FM',url:'http://stream.expressfm.com.tn:8000/;stream',fm:'100.5 FM',c:'#EF4444'}];
+let radioPlaying=null,radioAudio=null;
+function rRadio(){
+  const el=document.getElementById('radio-list');if(!el)return;
+  el.innerHTML=RADIOS.map((r,i)=>`<div class="radio-item ${radioPlaying===i?'playing':''}" onclick="playRadio(${i})">
+    <div style="width:50px;height:50px;border-radius:13px;background:${r.c};display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">📻</div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">${r.n}</div><div style="font-size:11px;color:var(--text3)">${r.fm}</div></div>
+    ${radioPlaying===i?'<div style="color:var(--gold2);font-weight:700;font-size:12px">▶ LIVE</div>':'<div style="color:var(--text3);font-size:20px">▶</div>'}
+  </div>`).join('');
+}
+function playRadio(i){if(radioAudio){radioAudio.pause();radioAudio=null}if(radioPlaying===i){radioPlaying=null;rRadio();return}radioPlaying=i;rRadio();toast('Connexion...');radioAudio=new Audio(RADIOS[i].url);radioAudio.play().catch(()=>toast('Indisponible','r'))}
+
+// ─── RÉPERTOIRE ───
+function rRep(){repTab(repTabA)}
+function repTab(t){
+  repTabA=t;
+  ['all','clients','fournisseurs'].forEach(x=>{const el=document.getElementById('rt-'+x);if(el)el.classList.toggle('on',x===t)});
+  const el=document.getElementById('rep-list');if(!el)return;
+  let list=contacts;if(t!=='all')list=contacts.filter(c=>c.type===t.replace(/s$/,''));
+  if(!list.length){el.innerHTML='<div style="text-align:center;padding:48px;color:var(--text3);font-size:13px">Aucun contact</div>';return}
+  el.innerHTML=list.map((c,i)=>`<div class="ct-row">
+    <div class="avatar" style="background:${avi(c.nom)}">${ini(c.nom)}</div>
+    <div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--text)">${c.nom}</div><div style="font-size:11px;color:var(--text3)">${c.zone||''} · ${c.type}</div><div style="font-size:11px;color:var(--text2)">${c.note||''}</div></div>
+    <div style="display:flex;gap:7px;align-items:center">
+      <a href="tel:${c.tel}" style="width:34px;height:34px;border-radius:17px;background:var(--green2);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:16px">📞</a>
+      <a href="https://wa.me/${(c.tel||'').replace(/\D/g,'')}" target="_blank" style="width:34px;height:34px;border-radius:17px;background:rgba(37,211,102,.1);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:16px">💬</a>
+    </div>
+  </div>`).join('');
+}
+function openAddContact(){document.getElementById('ctf-id').value='';document.getElementById('ctf-nom').value='';document.getElementById('ctf-tel').value='';document.getElementById('ctf-zone').value='';document.getElementById('ctf-note').value='';document.getElementById('sh-ct-ttl').textContent='Nouveau Contact';document.getElementById('sh-contact').classList.add('on')}
+function saveContact(){const nom=document.getElementById('ctf-nom').value.trim();if(!nom){toast('Nom requis','r');return}const ct={id:Date.now(),nom,tel:document.getElementById('ctf-tel').value,zone:document.getElementById('ctf-zone').value,type:document.getElementById('ctf-type').value,note:document.getElementById('ctf-note').value};contacts.push(ct);SA();closeOverlays();rRep();toast('Contact ajouté ✓','g')}
+
+// ─── CALCULATOR ───
+let cexpr='',cnew=true;
+function cf(v){
+  const exEl=document.getElementById('cx');const vEl=document.getElementById('cv');if(!vEl)return;
+  const cur=vEl.textContent;
+  if(v==='ac'){cexpr='';cnew=true;vEl.textContent='0';if(exEl)exEl.textContent='';return}
+  if(v==='+/-'){vEl.textContent=String(+cur*-1);return}
+  if(v==='%'){vEl.textContent=String(+cur/100);return}
+  if(['/','+','-','*'].includes(v)){cexpr=cur+v;cnew=true;if(exEl)exEl.textContent=cexpr;return}
+  if(v==='='){if(exEl)exEl.textContent=cexpr+cur;try{const r=Function('"use strict";return('+cexpr+cur+')')();vEl.textContent=String(Math.round(r*10000)/10000)}catch{vEl.textContent='Erreur'}cexpr='';cnew=true;return}
+  if(v==='.'){if(cnew){vEl.textContent='0.';cnew=false;return}if(!cur.includes('.'))vEl.textContent=cur+'.';return}
+  if(cnew){vEl.textContent=v;cnew=false}else{vEl.textContent=cur==='0'?v:cur+v}
+}
+function calcM(){const c=+document.getElementById('mc').value||0,p=+document.getElementById('mp').value||0;const mr=document.getElementById('mr');if(!mr)return;if(!c&&!p){mr.style.display='none';return}const mg=p-c;const pct=c>0?Math.round(mg/c*100):0;mr.style.display='block';mr.textContent=(mg>0?'+':'')+fm(mg)+' ('+pct+'%)';mr.style.color=mg>0?'var(--green)':'var(--red)'}
+
+// ─── CONFIG ───
+function rConfig(){
+  const el=document.getElementById('config-body');if(!el)return;
+  const inst=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+  el.innerHTML=`<div style="padding:16px">
+    ${!inst?`<div onclick="openInstallPrompt()" style="background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:18px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:14px;cursor:pointer;box-shadow:0 8px 32px rgba(212,136,10,.35)">
+      <div style="width:50px;height:50px;background:rgba(0,0,0,.2);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">📲</div>
+      <div style="flex:1"><div style="font-size:16px;font-weight:700;color:#fff">Installer l'application</div><div style="font-size:11px;color:rgba(255,255,255,.75);margin-top:2px">Ajouter à l'écran d'accueil</div></div>
+      <div style="color:rgba(255,255,255,.7);font-size:20px">›</div>
+    </div>`:`<div style="background:var(--green2);border:1px solid rgba(34,197,94,.2);border-radius:14px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:14px"><div style="font-size:24px">✅</div><div><div style="font-size:13px;font-weight:600;color:var(--green)">Application installée</div><div style="font-size:11px;color:var(--text3)">Synergy Horeca V4</div></div></div>`}
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-hd"><span class="card-t">📱 Contacts</span></div>
+      <div class="card-bd">
+        <div class="field"><label>WhatsApp</label><input value="${CF.wa||''}" onchange="CF.wa=this.value;SA()"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-hd"><span class="card-t">💾 Données</span></div>
+      <div class="card-bd" style="display:flex;flex-direction:column;gap:9px">
+        <button class="btn btn-ghost btn-full" onclick="exportData()">📤 Exporter</button>
+        <button class="btn btn-ghost btn-full" onclick="document.getElementById('imp-f').click()">📥 Importer</button>
+        <input type="file" id="imp-f" accept=".json" style="display:none" onchange="importData(this)">
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px;color:var(--text3);font-size:11px;letter-spacing:.5px">SYNERGY HORECA V4 · OPTION C DARK GOLD</div>
+  </div>`;
+}
+function exportData(){const d={SD,VD,CF,notes,contacts,docsData};const b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='synergy-backup-'+td()+'.json';a.click();toast('Export réussi ✓','g')}
+function importData(inp){const fr=new FileReader();fr.onload=e=>{try{const d=JSON.parse(e.target.result);if(d.SD)SD=d.SD;if(d.VD)VD=d.VD;if(d.notes)notes=d.notes;if(d.contacts)contacts=d.contacts;if(d.docsData)docsData=d.docsData;if(d.CF)CF=d.CF;SA();toast('Import réussi ✓','g')}catch{toast('Fichier invalide','r')}};fr.readAsText(inp.files[0])}
+
+// ─── PWA INSTALL ───
+let deferredPrompt=null;
+const UA=navigator.userAgent;
+const isIOS=/iphone|ipad|ipod/i.test(UA);
+const isSafari=/safari/i.test(UA)&&!/chrome|crios|fxios/i.test(UA);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const b=document.getElementById('inst-btn');if(b)b.style.display='flex'});
+window.addEventListener('appinstalled',()=>{deferredPrompt=null;document.getElementById('install-scr').style.display='none';lancerSplash()});
+async function doInstall(){
+  if(!deferredPrompt){
+    // Prompt pas encore prêt → attendre jusqu'à 4s
+    document.getElementById('inst-btn').innerHTML='⏳ Patientez...';
+    await new Promise(res=>{
+      const check=setInterval(()=>{if(deferredPrompt){clearInterval(check);res()}},200);
+      setTimeout(()=>{clearInterval(check);res()},4000);
+    });
+  }
+  if(!deferredPrompt){
+    // Toujours pas → iOS ou navigateur non supporté
+    showIOSGuide();
+    document.getElementById('inst-btn').style.display='none';
+    return;
+  }
+  document.getElementById('inst-btn').innerHTML='⏳ Installation...';
+  try{
+    await deferredPrompt.prompt();
+    const{outcome}=await deferredPrompt.userChoice;
+    if(outcome!=='accepted') skipInstall();
+  }catch{skipInstall()}
+  deferredPrompt=null;
+}
+function skipInstall(){document.getElementById('install-scr').style.display='none';lancerSplash()}
+function showIOSGuide(){document.getElementById('inst-guide').style.display='block'}
+function openInstallPrompt(){if(deferredPrompt)doInstall();else if(isIOS&&isSafari){document.getElementById('install-scr').style.display='flex';showIOSGuide()}else toast('Utilisez le menu du navigateur → "Installer"','')}
+
+// ─── SERVICE WORKER ───
+// SW uniquement sur GitHub Pages (pas dans iframe/preview Claude)
+if('serviceWorker' in navigator && window.self === window.top && !location.hostname.includes('claudeusercontent')){
+  window.addEventListener('load',()=>{
+    const base = location.pathname.replace(/\/[^/]*$/, '/') || '/';
+    navigator.serviceWorker.register(base + 'sw.js', {scope: base})
+      .then(r => console.log('[SW] ✓', r.scope))
+      .catch(e => console.warn('[SW]', e));
+  });
+}
+
+// ─── LAUNCH ───
+function lancerSplash(){
+  document.getElementById('splash').style.display='flex';
+  setTimeout(()=>{const s=document.getElementById('splash');s.classList.add('out');setTimeout(()=>{s.style.display='none';const m=document.getElementById('main');m.style.display='block';m.classList.add('fadein');initApp()},800)},5200);
+}
+function initApp(){
+  updateClock();updatePrayer();
+  buildCatBg();startBgRotation();
+  buildGrids();buildHomeKPIs();
+  setInterval(updateClock,10000);
+  setInterval(updatePrayer,60000);
+}
+
+// Stars
+makeStars('sp-stars',80);
+makeStars('inst-stars',40);
+
+// ── DÉMARRAGE ──────────────────────────────────
+document.getElementById('splash').style.display='none';
+
+if(isStandalone){
+  // Déjà installée → lancer directement
+  lancerSplash();
+} else {
+  // Afficher écran installation
+  document.getElementById('install-scr').style.display='flex';
+
+  if(isIOS && isSafari){
+    // iPhone Safari → guide manuel
+    document.getElementById('inst-guide').style.display='block';
+    document.getElementById('inst-btn').style.display='none';
+
+  } else if(isIOS && !isSafari){
+    // iPhone Chrome/Firefox → dire d'ouvrir Safari
+    document.getElementById('inst-guide').style.display='block';
+    document.getElementById('inst-guide').innerHTML=`
+      <div style="font-size:12px;font-weight:700;color:#EF4444;text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:12px">⚠️ Ouvrir dans Safari</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.8);text-align:center;line-height:1.7">Sur iPhone, l'installation<br>fonctionne <strong>uniquement dans Safari</strong>.<br><br>Copiez le lien et ouvrez-le dans Safari.</div>`;
+    document.getElementById('inst-btn').style.display='none';
+
+  } else {
+    // Android / Desktop Chrome → bouton natif
+    // Le bouton est TOUJOURS visible, même si prompt pas encore prêt
+    document.getElementById('inst-btn').style.display='flex';
+
+    // Si prompt pas encore capturé, attendre qu'il arrive
+    if(!deferredPrompt){
+      document.getElementById('inst-btn').innerHTML=`
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 16V4M8 8l4-4 4 4"/><rect x="3" y="18" width="18" height="4" rx="2"/></svg>
+        Installer l'application`;
+      // Le beforeinstallprompt viendra dans les prochaines secondes
+      // Le bouton reste visible et cliquable — doInstall() gère les 2 cas
+    }
+  }
+}
+</script>
+</body>
+</html>
